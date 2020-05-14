@@ -68,6 +68,29 @@ or in your workspace settings:
 }
 ```
 
+If you find the suggestion window not wide enough, you can install [Custom CSS and JS Loader](https://marketplace.visualstudio.com/items?itemName=be5invis.vscode-custom-css)
+and put in your `custom.css` the following code:
+
+```
+.monaco-editor .suggest-widget.docs-side {
+  width: 1000px;
+}
+
+.monaco-editor .suggest-widget.docs-side > .details {
+  width: 60%;
+  max-height: 800px !important;
+}
+
+.monaco-editor .suggest-widget.docs-side > .tree {
+  width: 30%;
+  float: left;
+}
+
+.monaco-editor .suggest-widget {
+  width: 600px;
+}
+```
+
 ## Raw parser
 
 This is a readable / example parser.
