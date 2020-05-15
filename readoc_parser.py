@@ -93,29 +93,28 @@ class VscParser(ReaDocParser):
             body += ' = '
 
         body += func.name + '('
-        body_core, i = VscParser.get_body_core(func.params, i, func.options)
+        body_core, i = VscParser.get_body_core(func.params, i)
         body += body_core
         body += ')$0'
         func_prop['body'] = body
         return func_prop
 
     @staticmethod
-    def get_body_core(elements: List[Tuple[str, str]], i: int, options: Optional[Dict[str, List[str]]] = None) -> (str, int):
+    def get_body_core(variables: List[VariableDoc], i: int) -> (str, int):
         body_core: str = ""
-        for element in elements:
-            have_options: bool = options is not None and len(element) > 1 and element[1] in options.keys()
+        for variable in variables:
             body_core += '${' + str(i)
-            if have_options:
-                body_core += '|' + element[0] + (' ' + element[1] if element[1] != '' else '') + ','
-                for option in options[element[1]]:
-                    body_core += '"' + option + '"' + ','
+            if len(variable.values) > 0:
+                body_core += '|' + variable.type + (' ' + variable.name if variable.name != '' else '') + ','
+                for value in variable.values:
+                    body_core += '"' + value + '"' + ','
                 body_core = body_core[:-1]  # Remove last comma
                 body_core += '|'
             else:
-                body_core += ':' + element[0] + (' ' + element[1] if element[1] != '' else '')
+                body_core += ':' + variable.type + (' ' + variable.name if variable.name != '' else '')
 
             body_core += '}'
-            if element != elements[-1]:   body_core += ','
+            body_core += ',' if variable != variables[-1] else ''
             i += 1
         return body_core, i
 
@@ -136,20 +135,21 @@ class RawParser(ReaDocParser):
 
             output += "return:"
             for ret in func.returns:
-                output += "(" + ret[0] + ":" + ret[1] + ")"
+                output += "(" + ret.type + ":" + ret.name + ")"
                 output += "," if ret != func.returns[-1] else ""
 
             output += "\nparams:"
             for param in func.params:
-                output += "(" + param[0] + ":" + param[1] + ")"
+                output += "(" + param.type + ":" + param.name + ")"
                 output += ", " if param != func.params[-1] else ""
 
-            for key, option in func.options.items():
-                output += "\nValid input for " + key + ": "
-                for o in option:
-                    output += o
-                    output += ", " if o != option[-1] else ""
-                output += "\n"
+            for param in func.params:
+                if len(param.values) > 0:
+                    output += "\nValid input for " + param.name + ": "
+                    for value in param.values:
+                        output += value
+                        output += ", " if value != param.values[-1] else ""
+                    output += "\n"
 
             output += "\ndescription:\n" + func.desc
             output += "\n------\n"

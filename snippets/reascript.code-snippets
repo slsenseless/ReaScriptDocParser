@@ -22629,7 +22629,7 @@
         "prefix": "max",
         "scope": "eel2",
         "description": "Returns (by \nreference) the maximum value of the two parameters. Since max() returns \nby reference, expressions such as max(x,y) = 5 are possible.\n",
-        "body": "max(${1:&value}${2:&value})$0"
+        "body": "max(${1:&value},${2:&value})$0"
     },
     "MEM_GET_VALUES eel2": {
         "prefix": "mem_get_values",
@@ -22659,7 +22659,7 @@
         "prefix": "min",
         "scope": "eel2",
         "description": "Returns (by \nreference) the minimum value of the two parameters. Since min() returns \nby reference, expressions such as min(x,y) = 5 are possible.\n",
-        "body": "min(${1:&value}${2:&value})$0"
+        "body": "min(${1:&value},${2:&value})$0"
     },
     "PRINTF eel2": {
         "prefix": "printf",

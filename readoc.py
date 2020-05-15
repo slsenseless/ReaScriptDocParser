@@ -5,6 +5,21 @@ import re
 languages: dict = dict({'C: ': 'c', 'EEL: ': 'eel2', 'Lua: ': 'lua', 'Python: ': 'python'})
 
 
+class VariableDoc:
+    """
+        Intermediate representation of a variable (function parameter or return)
+    """
+
+    def __init__(self, type: str, name: str = '', desc: str = ''):
+        """
+            Type can be its name if the variable doesnt have a type !
+        """
+        self.type: str = type
+        self.name: str = name
+        self.desc: str = desc
+        self.values: List[str] = []  # Possible values for parameter
+
+
 class FunctionDoc:
     """
         Intermediate representation of a function.
@@ -20,21 +35,18 @@ class FunctionDoc:
         self.name: str = match.group(2)
 
         # Pair is (type,name)
-        self.returns: List[Tuple[str, str]] = []
+        self.returns: List[VariableDoc] = []
         returns_text = match.group(1) if match.group(1) is not None else ''
         returns_text = returns_text.replace(', ', ',').replace('(', '').replace(')', '').replace(' =', '')
         if returns_text != '':
             for x in returns_text.split(','):
-                self.returns.append((x.rsplit(' ', 1)[0], x.rsplit(' ', 1)[1] if len(x.split(' ')) > 1 else ''))
+                self.returns.append(VariableDoc(x.rsplit(' ', 1)[0], x.rsplit(' ', 1)[1] if len(x.split(' ')) > 1 else ''))
 
         # Pair is (type,name)
-        self.params: List[Tuple[str, str]] = []
+        self.params: List[VariableDoc] = []
         if match.group(3) != '':
             for x in match.group(3).replace(', ', ',').replace('(', '').replace(')', '').split(','):
-                self.params.append((x.rsplit(' ', 1)[0], x.rsplit(' ', 1)[1] if len(x.split(' ')) > 1 else ''))
-
-        # Key : parameter name, value : possible values (for now only for parmname, desc parameter)
-        self.options: Dict[str, List[str]] = dict()
+                self.params.append(VariableDoc(x.rsplit(' ', 1)[0], x.rsplit(' ', 1)[1] if len(x.split(' ')) > 1 else ''))
 
 
 class KeywordDoc:
@@ -67,7 +79,6 @@ class ReaDoc:
 
         for hr in soup.find_all('hr'):
             function_code: Dict[str, str] = dict()  # Key = language, value = code
-            new_keywords: List[str] = []
             current_lang: str = 'unknow'
             desc: str = ''
             div_parent = hr.parent
@@ -138,13 +149,13 @@ class ReaDoc:
                     desc = desc[1:]
                 new_function = FunctionDoc(code, desc.replace('\n\n', '\n'), lang)
                 self.functions.append(new_function)
-                new_keywords = self.update_keywords(desc, lang)
+                new_keywords: List[str] = self.update_keywords(desc, lang)
 
                 if len(new_keywords) > 0:
                     for param_name in ['parmname', 'desc']:
                         for param in new_function.params:
-                            if len(param) > 1 and param_name == param[1]:
-                                new_function.options[param_name] = new_keywords
+                            if param.name == param_name:
+                                param.values = new_keywords
 
     def update_keywords(self, desc: str, lang: str) -> List[str]:
         """Update keywords attributes

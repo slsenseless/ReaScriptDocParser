@@ -39503,7 +39503,7 @@ Case-insensitive version of match().
 name:max
 language:eel2
 return:
-params:(&value:)(&value:)
+params:(&value:), (&value:)
 description:
 Returns (by 
 reference) the maximum value of the two parameters. Since max() returns 
@@ -39551,7 +39551,7 @@ Sets length items of memory at offset to value.
 name:min
 language:eel2
 return:
-params:(&value:)(&value:)
+params:(&value:), (&value:)
 description:
 Returns (by 
 reference) the minimum value of the two parameters. Since min() returns 
