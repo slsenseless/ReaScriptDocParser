@@ -33,11 +33,16 @@ class VscParser(ReaDocParser):
 
     def __init__(self, readoc: ReaDoc, **kwargs):
         super().__init__(readoc, **kwargs)
+        self.pretty: bool = True
+        self.opti_lang: bool = True
 
     def parse(self, readoc: ReaDoc, **kwargs) -> str:
         if kwargs is not None:
             if 'pretty' in kwargs:
                 self.pretty = kwargs['pretty']
+            if 'opti_lang' in kwargs:
+                self.opti_lang = kwargs['opti_lang']
+
         doc: dict = dict()
         for func in readoc.functions:
             func_prop = self.get_function_dict(func)
@@ -50,13 +55,27 @@ class VscParser(ReaDocParser):
                 doc[func.name.upper() + '_WR ' + func.lang] = func_prop
 
         for key, keyword in readoc.keywords.items():
-            for lang in keyword.languages:
+            if self.opti_lang and keyword.languages == list(languages.values()):
                 keyword_prop: dict = dict()
                 keyword_prop['prefix'] = keyword.name
-                keyword_prop['scope'] = lang
                 keyword_prop['body'] = keyword.name
-                keyword_prop['description'] = keyword.desc
-                doc[keyword.name.upper() + ' ' + lang] = keyword_prop
+                keyword_prop['description'] = keyword.desc + "\n"
+                doc[keyword.name.upper()] = keyword_prop
+            else:
+                for lang in keyword.languages:
+                    keyword_prop: dict = dict()
+                    keyword_prop['prefix'] = keyword.name
+                    keyword_prop['scope'] = lang
+                    keyword_prop['body'] = keyword.name
+                    keyword_prop['description'] = keyword.desc + "\n"
+                    doc[keyword.name.upper() + ' ' + lang] = keyword_prop
+
+        for key, alias in readoc.aliases.items():
+            alias_prop: dict = dict()
+            alias_prop['prefix'] = alias.alias
+            alias_prop['body'] = alias.name
+            alias_prop['description'] = alias.desc + "\n"
+            doc[alias.alias] = alias_prop
 
         if self.pretty:
             return json.dumps(doc, indent=4, separators=(',', ': '))
@@ -77,11 +96,15 @@ class VscParser(ReaDocParser):
         func_prop: dict = dict()
         func_prop['prefix'] = func.name
         if func.lang == 'lua':
-            func_prop['prefix'] = func.name.replace('reaper.', 'reaperwr.') if retval else func.name
+            func_prop['prefix'] = func.name
+            if retval:
+                func_prop['prefix'] = func_prop['prefix'].replace('reaper.', 'reaperwr.')
+                func_prop['prefix'] = func_prop['prefix'].replace('ultraschall.', 'ultraschallwr.')
+
         elif retval:
             func_prop['prefix'] = 'WR_' + func_prop['prefix']
         func_prop['scope'] = func.lang
-        func_prop['description'] = func.desc
+        func_prop['description'] = func.get_full_desc() + "\n"
         body: str = ""
         i: int = 1
         if retval:
@@ -128,7 +151,7 @@ class RawParser(ReaDocParser):
         super().__init__(readoc, **kwargs)
 
     def parse(self, readoc: ReaDoc, **kwargs) -> str:
-        output: str = "FUNCTIONS:\n"
+        output: str = "FUNCTIONS:\n" if len(readoc.functions) > 0 else ''
         for func in readoc.functions:
             output += "name:" + func.name + "\n"
             output += "language:" + func.lang + "\n"
@@ -151,10 +174,13 @@ class RawParser(ReaDocParser):
                         output += ", " if value != param.values[-1] else ""
                     output += "\n"
 
-            output += "\ndescription:\n" + func.desc
+            output += "\ndescription:\n" + func.get_full_desc()
             output += "\n------\n"
 
-        output += "KEYWORDS:\n"
+        output += "KEYWORDS:\n" if len(readoc.keywords) > 0 else ''
         for key, keyword in readoc.keywords.items():
             output += keyword.name + ":" + keyword.desc + " / languages:" + ','.join(keyword.languages) + "\n"
+        output += "ALIASES:\n" if len(readoc.aliases) > 0 else ''
+        for key, alias in readoc.aliases.items():
+            output += alias.alias + "->" + alias.name + ":" + alias.desc + "\n"
         return output
