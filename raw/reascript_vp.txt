@@ -1,0 +1,703 @@
+FUNCTIONS:
+name:input_count
+language:eel2
+return:(integer:count_inputs)
+params:
+description:
+Returns number of inputs available (total), range [0..n)
+RETURNS:
+count_inputs:the number of inputs available
+------
+name:input_track_count
+language:eel2
+return:(integer:count_tracks)
+params:
+description:
+Returns the number of available inputs on discrete tracks
+RETURNS:
+count_tracks:the number of tracks available
+------
+name:input_track
+language:eel2
+return:(integer:input)
+params:(integer:track)
+description:
+Returns input for bottommost item or FX on discrete-track track (0 is first track with video item above current, etc)
+PARAMETERS:
+track:the track, whose bottommost item or FX you want
+RETURNS:
+input:the input for bottomost item or FX
+------
+name:input_track_exact_count
+language:eel2
+return:(nteger:num_tracks)
+params:
+description:
+Returns the number of tracks above the current track that could possibly contain video items.
+RETURNS:
+num_tracks:the number of tracks above the current track, that could contain videoitems
+------
+name:input_track_exact
+language:eel2
+return:(integer:inputs)
+params:(integer:track)
+description:
+Returns input for bottommost item or FX on track relative to current track.
+Returns -1000 if track does not contain any video items at the current time, or -10000 if no further tracks contain video.
+PARAMETERS:
+track:the tracknumber, whose bottommost input you want
+RETURNS:
+inputs:the input for bottommost item or FX
+------
+name:input_next_item
+language:eel2
+return:(integer:next_input)
+params:(integer:input)
+description:
+Returns the next_input after input which is on a different item or track
+PARAMETERS:
+input:the input whose next_input you want
+RETURNS:
+next_input:the next input after input
+------
+name:input_next_track
+language:eel2
+return:(integer:next_input)
+params:(integer:input)
+description:
+Returns the next_input after input which is on a different track.
+PARAMETERS:
+input:the input, whose next input on a different track you want
+RETURNS:
+next_input:the next input on a different track
+------
+name:input_ismaster
+language:eel2
+return:(float:fx_position)
+params:
+description:
+Returns 1.0 if current FX is on master chain, 2.0 if on monitoring FX chain
+RETURNS:
+fx_position:1.0, FX is on master chain; 2.0, FX is on monitoring FX chain
+------
+name:input_info
+language:eel2
+return:(integer:retval)
+params:(integer:input), (integer:w), (integer:h), (double:srctime), (double:wet), (double:parm1), (...:)
+description:
+Returns 1 if input is available, sets w/h to dimensions.
+If srctime specified, it will be set with the source-local time of the underlying media.
+If input is a video processor in effect form, automated parameters can be queried via wet/parm1/...
+PARAMETERS:
+input:the input, whose information you want
+h:height-dimension in pixels; will be set, if input is available
+RETURNS:
+retval:1, if input is available
+------
+name:input_get_name
+language:eel2
+return:(integer:retval)
+params:(integer:input), (string:#str)
+description:
+Gets the input take name or track name. returns >0 on success
+PARAMETERS:
+input:the input, whose name you want to query
+#str:the pointer to a string-variable, into which the input-name shall be stored
+RETURNS:
+retval:>0, if name can be gotten
+------
+name:gfx_img_alloc
+language:eel2
+return:(integer:image_index)
+params:(optional integer:w), (optional integer:h), (optional integer:clear)
+description:
+Returns an image index for drawing (can create up to 32 images). Contents of image undefined unless clear set.
+PARAMETERS:
+w:set the width in pixels
+h:set the height in pixels
+clear:clear the image, before using it
+RETURNS:
+image_index:the index of the newly created image
+------
+name:gfx_img_resize
+language:eel2
+return:(integer:image_handle)
+params:(integer:handle), (integer:w), (integer:h), (optional integer:clear)
+description:
+Sets an image size (handle can be -1 for main framebuffer).
+Contents of image undefined after resize, unless clear set.
+Clear=-1 will only clear if resize occurred.
+Returns the image handle (if handle is invalid, returns a newly-allocated image handle)
+PARAMETERS:
+handle:the handle of the image, that you want to resize
+w:the new width in pixels
+h:the new height in pixels
+clear:set to clear the image; -1, clears only, if resize has occurred.
+RETURNS:
+image_handle:the image-handle of the resized image; will be a newly allocated one, if parameter handle was invalid
+------
+name:gfx_img_hold
+language:eel2
+return:
+params:(integer:handle)
+description:
+Retains (cheaply) a read-only copy of an image in handle.
+This copy should be released using gfx\_img\_free() when finished. Up to 32 images can be held.
+PARAMETERS:
+handle:the handle, that you want to make read-only
+------
+name:gfx_img_getptr
+language:eel2
+return:(integer:unique_identifier)
+params:(integer:handle)
+description:
+Gets a unique identifier for an image, valid for while the image is retained.
+Can be used (along with gfx\_img_hold to detect when frames change in a low frame rate video
+PARAMETERS:
+handle:the image-handle, of which you want to have a unique identifier
+RETURNS:
+unique_identifier:the unique identifier for image "handle"
+------
+name:gfx_img_free
+language:eel2
+return:
+params:(integer:handle)
+description:
+Releases an earlier allocated image index.
+PARAMETERS:
+handle:the image handle, that you want to delete from further use
+------
+name:gfx_img_info
+language:eel2
+return:(integer:retval)
+params:(integer:handle), (integer:#w), (integer:#h)
+description:
+Gets dimensions of image, returns 1 if valid (resize it if it's inexplicably invalidated)
+PARAMETERS:
+handle:the image-handle, whose dimensions you want to retrieve
+#w:the pointer of a variable, into which the width in pixels shall be stored
+#h:the pointer of a variable, into which the height in pixels shall be stored
+RETURNS:
+retval:1, if it's a valid image-handle
+------
+name:gfx_set
+language:eel2
+return:
+params:(float:r), (optional float:g), (optional float:b), (optional float:a=1), (integer:mode=0), (optional integer:dest), (optional float:a2=1)
+description:
+Updates r/g/b/a/mode to values specified, dest is only updated if parameter specified.
+PARAMETERS:
+r:the destination, into which to draw
+g:the destination, into which to draw
+b:the blue-value(0 to 1); if unset, the value of r will be used
+a=1:the alpha-value(0 to 1); if unset, the value defaults to 1
+dest:the destination, into which to draw
+------
+name:gfx_blit
+language:eel2
+return:(integer:retval)
+params:(integer:input), (optional integer:preserve_aspect=0), (integer:x), (optional integer:y), (optional integer:w), (optional integer:h), (optional integer:srcx), (optional integer:srcy), (optional integer:srcw), (optional integer:srch)
+description:
+Draws input to framebuffer. preserve_aspect=-1 for no fill in pad areas
+PARAMETERS:
+input:the input, that shall be blit into the framebuffer
+x:the x-offset in the source pixels, from which the input shall be blit from
+y:the y-offset in the source pixels, from which the input shall be blit from
+w:the width-offset in the source pixels, from which the input shall be blit from
+h:the height-offset in the source pixels, from which the input shall be blit from
+srcx:the x-offset in the source pixels, from which the input shall be blit from
+srcy:the y-offset in the source pixels, from which the input shall be blit from
+srcw:the width-offset in the source pixels, from which the input shall be blit from
+srch:the height-offset in the source pixels, from which the input shall be blit from
+RETURNS:
+retval:0, if blitting is impossible; 1, if blitting was successful
+------
+name:gfx_fillrect
+language:eel2
+return:(integer:retval)
+params:(integer:x), (integer:y), (integer:w), (integer:h)
+description:
+Fills a rectangle with the current color/mode/alpha set by gfx\_set
+PARAMETERS:
+x:the x-position of the rectangle in pixels
+y:the y-position of the rectangle in pixels
+w:the width of the rectangle in pixels
+h:the height of the rectangle in pixels
+RETURNS:
+retval:0, in case of an error; 1, in case of success
+------
+name:gfx_procrect
+language:eel2
+return:(integer:retval)
+params:(integer:x), (integer:y), (integer:w), (integer:h), (table:channel_tab), (optional integer:mode)
+description:
+Processes a rectangle with 768-entry channel table [256 items of 0..1 per channel].
+Specify mode=1 to use Y value for U/V source channels (colorization mode).
+PARAMETERS:
+x:the x-position of the rectangle in pixels
+y:the y-position of the rectangle in pixels
+w:the width of the rectangle in pixels
+h:a 768-entry-table which will be used for the processing
+channel_tab:a 768-entry-table which will be used for the processing
+mode:1, to use Y-value for U/V-source-channels
+RETURNS:
+retval:unknown
+------
+name:gfx_evalrect
+language:eel2
+return:(integer:retval)
+params:(integer:x), (integer:y), (integer:w), (integer:h), (string:code_string), (optional integer:flags), (optional integer:src), (optional string:init_code_string), (optional string:src2)
+description:
+Processes a rectangle with code_string being executed for every pixel/pixel-group.
+Returns -1 if code_string failed to compile.
+Code should reference per pixel values (0-255, unclamped), depending on colorspace:
+RGBA:  r/g/b/a (0-255, unclamped)
+YUY2: y1,y2, u, v (0-255, unclamped; u/v are centered at 128)
+YV12: y1-y4, u, v (0-255, unclamped; u/v are centered at 128)
+example for a codestring:
+"r[0]+=1; g[256]+=1; b[512]+=1;
+(0.299*r + 0.587*g + 0.114*b)[768] += 1;"
+Additional options:
+flags|=1 in order to prevent multiprocessing (if your routine needs  to process pixels in-order)
+flags|=2 to ignore output (analysis-only). This is only valid when not using src2 and not using one of the 4/8 modes.
+flags|=4,8 -- only valid in RGBA/YV12, and only if src/src2 not specified. flags&8 means process in vertical slices (top to bottom unless flags&4). flags&4 but not flags&8 means right-to-left. In each case y1-y4 are reordered for convenience (the same filter code can typically be used in various orientations).
+If init_code_string specified, it will be executed in each thread context before processing
+If src specified (and >= -1), sr/sg/sb/sa, sy1/su/sv etc will be available to read. In this case only the intersection of valid rectangles between src and the destination buffer will be processed.
+If src and src2 specified (and >= -1), s2r/s2g/s2b/s2a, s2y1/s2u/s2v etc will also be available to read.
+Note: variables _1-_99 are thread-local variables which will always be initialized to 0, and _0 will be initialized to the thread index (usually 0 or 1)
+PARAMETERS:
+x:the x-position of the rectangle
+y:the y-position of the rectangle
+w:the width of the rectangle
+h:the height of the rectangle
+code_string:a code-string, that shall be used during initialization
+flags:flags, that influence the processing
+src:a second source-image
+init_code_string:a code-string, that shall be used during initialization
+src2:a second source-image
+RETURNS:
+retval:-1, in case of an error(compilation of the code_string was unsuccessful)
+------
+name:gfx_gradrect
+language:eel2
+return:(integer:retval)
+params:(integer:x), (integer:y), (integer:w), (integer:h), (float:r), (float:g), (float:b), (float a:), (optional float:drdx), (optional float:dgdx), (optional float:dbdx), (optional float:dadx), (optional float:drdy), (optional float:dgdy), (optional float:dbdy), (optional float:dady)
+description:
+Fills rectangle. r/g/b/a supply color at top left corner, drdx (if specified) is amount red changes per X-pixel, etc.
+PARAMETERS:
+x:the amount of delta-value, how the alpha-color shall be changed each pixel in x-direction
+y:the amount of delta-value, how the alpha-color shall be changed each pixel in y-direction
+w:the width of the rectangle in pixels
+h:the height of the rectangle in pixels
+r:the amount of delta-value, how the red-color shall be changed each pixel in y-direction
+g:the amount of delta-value, how the green-color shall be changed each pixel in y-direction
+b:the amount of delta-value, how the blue-color shall be changed each pixel in y-direction
+:the amount of delta-value, how the alpha-color shall be changed each pixel in y-direction
+drdx:the amount of delta-value, how the red-color shall be changed each pixel in x-direction
+dgdx:the amount of delta-value, how the green-color shall be changed each pixel in x-direction
+dbdx:the amount of delta-value, how the blue-color shall be changed each pixel in x-direction
+dadx:the amount of delta-value, how the alpha-color shall be changed each pixel in x-direction
+drdy:the amount of delta-value, how the red-color shall be changed each pixel in y-direction
+dgdy:the amount of delta-value, how the green-color shall be changed each pixel in y-direction
+dbdy:the amount of delta-value, how the blue-color shall be changed each pixel in y-direction
+dady:the amount of delta-value, how the alpha-color shall be changed each pixel in y-direction
+RETURNS:
+retval:unknown
+------
+name:gfx_rotoblit
+language:eel2
+return:(integer:retval)
+params:(integer:srcidx), (float angle:), (optional integer:x), (optional integer:y), (optional integer:w), (optional integer:h), (optional integer:srcx), (optional integer:srcy), (optional integer:w), (optional integer:h), (optional integer:cliptosrcrect), (optional integer:centxoffs), (optional integer:centyoffs)
+description:
+Blits with rotate. This function behaves a bit odd when the source and destination sizes/aspect ratios differ, so gfx\_deltablit() is generally more useful.
+PARAMETERS:
+srcidx:the source-image, that shall be blit as rotated image
+:adds an offset to the center of the image at x-position in pixels
+x:adds an offset to the center of the image at x-position in pixels
+y:adds an offset to the center of the image at x-position in pixels
+w:the width in pixels of the source-image, from which to blit from; affects stretching of the image!
+h:the height in pixels of the source-image, from which to blit from; affects stretching of the image!
+srcx:the x-position in pixels in the source-image, from which to blit from
+srcy:the y-position in pixels in the source-image, from which to blit from
+w:the width in pixels of the source-image, from which to blit from; affects stretching of the image!
+h:the height in pixels of the source-image, from which to blit from; affects stretching of the image!
+cliptosrcrect:clips the source-image rectangle; 1, clip; 0, don't clip
+centxoffs:adds an offset to the center of the image at x-position in pixels
+centyoffs:adds an offset to the center of the image at x-position in pixels
+RETURNS:
+retval:0, blitting was unsuccessful(possibly due invalid image-source); 1, blitting was successful
+------
+name:gfx_deltablit
+language:eel2
+return:(integer:retval)
+params:(integer:srcidx), (integer:x), (integer:y), (integer:w), (integer:h), (integer:srcx), (integer:srcy), (integer:dsdx), (integer:dtdx), (integer:dsdy), (integer:dtdy), (integer:dsdxdy), (integer:dtdxdy), (optional integer:dadx), (optional integer:dady), (optional integer:dadxdy)
+description:
+Blits with source pixel transformation control.
+S and T refer to source coordinates:
+dsdx is how much the source X position changes with each X destination pixel,
+dtdx is how much the source Y position changes with each X destination pixel, etc.
+All of the S, T and A parameters accept negative values as well.
+PARAMETERS:
+srcidx:the index of the image, from which you want to deltablit
+x:affects x and y-direction at the same time; can be used for noise-effects; use 0 for original picture position
+y:affects x and y-direction at the same time; can be used for noise-effects; use 0 for original picture position
+w:the width of the blitted-image in pixels
+h:the height of the blitted-image in pixels
+srcx:the x-offset in pixels of the source-image, that shall be blitted; use 0 for original picture position
+srcy:the y-offset in pixels of the source-image, that shall be blitted; use 0 for original picture position
+dsdx:affects x and y-direction at the same time and can be produced for curved images; use 0 for original picture position
+dtdx:affects x and y-direction at the same time and can be produced for curved images; use 0 for original picture position
+dsdy:the source X position change with each Y destination pixel; use 1 for original picture position
+dtdy:the source Y position change with each Y destination pixel; use 0 for original picture position
+dsdxdy:affects x and y-direction at the same time and can be produced for curved images; use 0 for original picture position
+dtdxdy:affects x and y-direction at the same time and can be produced for curved images; use 0 for original picture position
+dadx:affects x and y-direction at the same time; can be used for noise-effects; use 0 for original picture position
+dady:the source-alpha change with each Y destination pixel; can be used for noise-effects; use 0 for original picture position
+dadxdy:affects x and y-direction at the same time; can be used for noise-effects; use 0 for original picture position
+RETURNS:
+retval:0, blitting was unsuccessful(possibly due invalid image-source); 1, blitting was successful
+------
+name:gfx_xformblit
+language:eel2
+return:(integer:retval)
+params:(integer:srcidx), (integer:x), (integer:y), (integer:w), (integer:h), ( integer:wdiv), (integer:hdiv), (table:tab), (optional integer:wantalpha)
+description:
+Blits with a transformation table.
+tab is wdiv*hdiv*2 table of source point coordinates in float-values.
+If wantalpha=1, tab is wdiv*hdiv*3 table of src points including alpha for each point.
+PARAMETERS:
+srcidx:the index of the image, that you want to transformblit
+x:x-position in pixels of the transform-blitted-image
+y:y-position in pixels of the transform-blitted-image
+w:0, transform the image only; 1, transform on an alpha-level
+h:0, transform the image only; 1, transform on an alpha-level
+wdiv:the divisor of the table tab for width transformation
+hdiv:the divisor of the table tab for height transformation
+tab:a table with all the transform-values in them, who are float and can be negative as well
+wantalpha:0, transform the image only; 1, transform on an alpha-level
+RETURNS:
+retval:0, blitting was unsuccessful(possibly due invalid image-source); 1, blitting was successful
+------
+name:gfx_keyedblit
+language:eel2
+return:(integer:retval)
+params:(integer:input), (optional integer:x), (optional integer:y), (optional integer:w), (optional integer:h), (optional integer:srcx), (optional integer:srcy), (optional float:kv1), (optional float:kv2), (optional float:kv3), (optional float:kv4)
+description:
+Chroma-key blits, using the source color as key. kv1-kv4 meaning depends on colorspace:
+YV12/YUY2:
+kv1 is U target (-0.5 default)
+kv2 is V target (-0.5 default)
+kv3 is closeness-factor (0.4 default)
+kv4 is the gain (2.0 default)
+RGBA:
+kv1 is green-factor (1.0 default)
+kv2 is blue-factor (-1.0 default)
+kv3 is offset (-1.0 default)
+kv4 enables spill removal (1.0 default)
+PARAMETERS:
+input:the image, to which the chroma-key shall be applied to
+x:the offset-x-position of the source-image
+y:the offset-y-position of the source-image
+w:the width-position of the chroma-key-area in pixels
+h:the height-position of the chroma-key-area in pixels
+srcx:the offset-x-position of the source-image
+srcy:the offset-y-position of the source-image
+kv1:U target(YV12/YUV2) / green(RGBA)
+kv2:V target(YV12/YUV2) / blue(RGBA)
+kv3:closeness-factor(YV12/YUV2) / offset(RGBA)
+kv4:gain(YV12/YUV2) / spill removal(RGBA)
+RETURNS:
+retval:unknown
+------
+name:gfx_destkeyedblit
+language:eel2
+return:(integer:retval)
+params:(input:input), (optional integer:x), (optional integer:y), (optional integer:w), (optional integer:h), (optional integer:srcx), (optional integer:srcy), (optional float:kv1), (optional float:kv2), (optional float:kv3), (optional float:kv4)
+description:
+Chroma-key blits, using destination color as key. ignores gfx\_a and gfx\_mode.
+See gfx\_keyedblit() for kv1-kv4 explanation.
+PARAMETERS:
+input:the image, to which the chroma-key shall be applied to
+x:the offset-x-position of the source-image
+y:the offset-y-position of the source-image
+w:the width-position of the chroma-key-area in pixels
+h:the height-position of the chroma-key-area in pixels
+srcx:the offset-x-position of the source-image
+srcy:the offset-y-position of the source-image
+kv1:U target(YV12/YUV2) / green(RGBA)
+kv2:V target(YV12/YUV2) / blue(RGBA)
+kv3:closeness-factor(YV12/YUV2) / offset(RGBA)
+kv4:gain(YV12/YUV2) / spill removal(RGBA)
+RETURNS:
+retval:unknown
+------
+name:gfx_setfont
+language:eel2
+return:(integer:retval)
+params:(integer:pxsize), (optional string:#fontname), (optional integer:flags)
+description:
+Sets a font. flags are specified as a multibyte integer, using a combination of the following flags (specify multiple as 'BI' or 'OI' or 'OBI' etc):
+'B' - Bold
+'I' - Italics
+'R' - Blur
+'V' - Invert
+'M' - Mono
+'S' - Shadow
+'O' - Outline
+PARAMETERS:
+pxsize:the size of the font in pixels
+#fontname:the name of the font you want to use
+flags:the flags, that can influence the design of the font. Just put one or more of the following into single quotes
+RETURNS:
+retval:unknown
+------
+name:gfx_str_measure
+language:eel2
+return:(integer:string_length)
+params:(string:#string), (optional integer:#w), (optional integer:#h)
+description:
+Measures the size of #string, returns width
+PARAMETERS:
+#string:the string, whose width/height you want to know; it depends on the currently set font and fontsize
+#w:a reference to a variable, that shall be set with the width in pixels by the function gfx_str_measure
+#h:a reference to a variable, that shall be set with the height in pixels by the function gfx_str_measure
+RETURNS:
+string_length:the length of the string in pixels
+------
+name:gfx_str_draw
+language:eel2
+return:(integer:retval)
+params:(string:#string), (optional integer:x), (optional integer:y), (optional float:fxc_r), (optional float:fxc_g), (optional float:fxc_b)
+description:
+Draw string, fxc_r/g/b are the FX color if Shadow/Outline are set in the font
+PARAMETERS:
+#string:the string, that shall be drawn into the video
+x:blue-color-value for outline/shadow, if set in the current font(0-1)
+y:y-position of the string, in pixels
+fxc_r:red-color-value for outline/shadow, if set in the current font(0-1)
+fxc_g:green-color-value for outline/shadow, if set in the current font(0-1)
+fxc_b:blue-color-value for outline/shadow, if set in the current font(0-1)
+RETURNS:
+retval:unknown
+------
+name:gfx_getpixel
+language:eel2
+return:(integer:retval)
+params:(integer:input), (integer:x), (integer:y), (integer:#v1), (integer:#v2), (integer:#v3), (optional integer:#v4)
+description:
+Gets the value of a pixel from input at x,y.
+v1/v2/v3 will be YUV or RGB (v4 can be used to get Alphavalue), returns 1 on success
+PARAMETERS:
+input:the input-image from which to get the pixel
+x:the x-position of the pixel, whose color you want
+y:the y-position of the pixel, whose color you want
+#v1:a pointer to a variable, into which gfx_getpixel writes the red-value
+#v2:a pointer to a variable, into which gfx_getpixel writes the green-value
+#v3:a pointer to a variable, into which gfx_getpixel writes the blue-value
+#v4:a pointer to a variable, into which gfx_getpixel writes the alpha-value
+RETURNS:
+retval:0, getting the pixel wasn't successful; 1, getting the pixel was successful
+------
+name:rgb2yuv
+language:eel2
+return:(integer:retval)
+params:(float:#r), (float:#g), (float:#b)
+description:
+Converts r,g,b to YUV, does not clamp [0..1]
+PARAMETERS:
+#r:a pointer-variable; put the r-value into it, pass it to the function and it will replace the r-value with the y value
+#g:a pointer-variable; put the g-value into it, pass it to the function and it will replace the g-value with the u value
+#b:a pointer-variable; put the b-value into it, pass it to the function and it will replace the b-value with the v value
+RETURNS:
+retval:unknown
+------
+name:yuv2rgb
+language:eel2
+return:(integer:retval)
+params:(float:#r), (float:#g), (float:#b)
+description:
+Converts YUV to r,g,b, not clamping [0..1]
+RETURNS:
+retval:unknown
+------
+name:fft
+language:eel2
+return:(integer:retval)
+params:(table:buffer), (integer:size)
+description:
+Performs a FFT on the data in the local memory buffer at the offset specified by the first parameter.
+The size of the FFT is specified by the second parameter, which must be a power of two 16-32768.
+The outputs are permuted, so if you plan to use them in-order, call fft_permute(buffer, size) before and fft_ipermute(buffer,size) after in-order use.
+Inputs or outputs will need to be scaled down by 1/size.
+Notes:
+fft()/ifft() require real / imaginary input pairs, so a 256 point FFT actually works with 512 items.
+fft()/ifft() must NOT cross a 65,536 item boundary, so be sure to specify the offset accordingly.
+PARAMETERS:
+buffer:a table, with all values that shall be processed using the FFT
+size:the size of the FFT, as a power of two between  2^4(16) to 2^15(32768)
+RETURNS:
+retval:value of buffer, if buffer is only one variable instead of a table
+------
+name:ifft
+language:eel2
+return:(integer:retval)
+params:(table:buffer), (integer:size)
+description:
+Performs an inverse FFT. For more information see fft().
+PARAMETERS:
+buffer:a table, with all values that shall be processed using the iFFT
+size:the size of the FFT, as a power of two between  2^4(16) to 2^15(32768)
+RETURNS:
+retval:value of buffer, if buffer is only one variable instead of a table
+------
+name:fft_real
+language:eel2
+return:(integer:retval)
+params:(table:buffer), (integer:size)
+description:
+Performs a real FFT, taking size input samples and producing size/2 complex output pairs. Usually used along with fft_permute(size/2).
+Inputs/outputs will need to be scaled by 0.5/size. The first output complex pair will be (DC, nyquist).
+PARAMETERS:
+buffer:a table, with all values that shall be processed using the FFT
+size:the size of the FFT, as a power of two between  2^4(16) to 2^15(32768)
+RETURNS:
+retval:value of buffer, if buffer is only one variable instead of a table
+------
+name:ifft_real
+language:eel2
+return:(integer:retval)
+params:(table:buffer), (integer:size)
+description:
+Performs an inverse FFT, taking size/2 complex input pairs (the first being DC, nyquist) and producing size real output values.
+Usually used along with fft_ipermute(size/2).
+PARAMETERS:
+buffer:a table, with all values that shall be processed using the iFFT
+size:the size of the FFT, as a power of two between  2^4(16) to 2^15(32768)
+RETURNS:
+retval:value of buffer, if buffer is only one variable instead of a table
+------
+name:fft_permute
+language:eel2
+return:(integer:retval)
+params:(table:buffer), (integer:size)
+description:
+Permutes the output of fft() to have bands in-order.
+PARAMETERS:
+buffer:a table, with all values that shall be processed using the FFT
+size:the size of the FFT, as a power of two between  2^4(16) to 2^15(32768)
+RETURNS:
+retval:value of buffer, if buffer is only one variable instead of a table
+------
+name:fft_ipermute
+language:eel2
+return:(integer:retval)
+params:(buffer:), (size:)
+description:
+Permutes the input for ifft(), taking bands from in-order to the order ifft() requires. See fft() for more information.
+PARAMETERS:
+:the size of the FFT, as a power of two between  2^4(16) to 2^15(32768)
+:the size of the FFT, as a power of two between  2^4(16) to 2^15(32768)
+RETURNS:
+retval:value of buffer, if buffer is only one variable instead of a table
+------
+name:convolve_c
+language:eel2
+return:(integer:retval)
+params:(table:dest), (table:src), (integer:size)
+description:
+Multiplies each of size complex pairs in dest by the complex pairs in src. Often used for convolution.
+PARAMETERS:
+dest:the table, in which the function will write the destination-values
+src:the table, from which the function will get the destination-values
+size:the size of the tables
+RETURNS:
+retval:unknown
+------
+name:ui_get_state
+language:eel2
+return:(integer:retval)
+params:(integer:#ctx), (optional integer:#mouse_x), (optional integer:#mouse_y), (optional integer:force_frame_in), (optional integer:#mouse_wheel_state), (optional integer:#mouse_hwheel_state)
+description:
+Gets UI state and context, only usable from Monitoring FX (returns 0 if used from track).
+Returns state
+(1/2/4 are l/r/m mouse buttons,
+8/16/32 are ctrl/shift/alt,
+1024 is whether configuration for this processor is visible).
+If 'ctx' set to -1, context is video window and any returned mouse coordinates are [0..1] (where 0,0 is upper left corner, 1,1 is lower right corner of the video area).
+If 'ctx' is set to [1..24], it means the user is editing that knob.
+If force_frame_in is specified and is positive, then the processor will be re-executed in this amount of time (even if no new video source is available), otherwise only updated during playback or change of the video.
+PARAMETERS:
+#ctx:-1, mouse is above video-processor; 1-24, mouse is changing knob 1-24; 0, mouse is outside the video-window
+#mouse_x:ui_get_state puts into this variable the current x-mouse-position(0-1)/knob-control area-xposition, when ctc>-1
+#mouse_y:ui_get_state puts into this variable the current y-mouse-position(0-1)/knob-control area-yposition, when ctc>-1
+force_frame_in:positive, update getting the ui-state even if no video is available; in seconds
+#mouse_wheel_state:ui_get_state puts into this variable the current mouse-wheel-state
+#mouse_hwheel_state:ui_get_state puts into this variable the current horizontal-mouse-wheel-state
+RETURNS:
+retval:unknown
+------
+name:time_precise
+language:eel2
+return:(integer:retval)
+params:(optional float:#val)
+description:
+Sets the parameter (or a temporary buffer if omitted) to a system-local timestamp in seconds, and returns a reference to that value.
+The granularity of the value returned is system defined (but generally significantly smaller than one second).
+RETURNS:
+retval:the precise time
+------
+name:on_parameter_change
+language:eel2
+return:
+params:(float:pvar), (optional integer:isdone)
+description:
+Notifies that the parameter pointed to by pvar (must be param1..param24 or a user-defined parameter) has changed.
+Specify isdone=1 when done modifying parameter (e.g. releasing touch)
+PARAMETERS:
+pvar:the parameter, whose parameter-change you want to notify
+isdone:1, when done modifying parameter
+------
+KEYWORDS:
+project_time:project time in seconds / languages:eel2
+project_tempo:current tempo in BPM / languages:eel2
+project_ts_num:current time signature numerator / languages:eel2
+project_ts_denom:current time signature denominator / languages:eel2
+project_time_qn:current project position in QN / languages:eel2
+time:item time in seconds (if in item) / languages:eel2
+framerate:project FPS (30.0, 29.97, etc) / languages:eel2
+project_w:project preferred video width (code can override this before drawing) / languages:eel2
+project_h:project preferred video height (code can override this before drawing) / languages:eel2
+project_wh_valid:set nonzero if project_w/project_h reflect actual project setting (otherwise could be media-defined) / languages:eel2
+colorspace:current rendering colorspace, e.g. 'RGBA', 'YV12', or 'YUY2'.
+You can override this before drawing (or between drawing).
+This may be set to 0 initially if the user has the Auto project colorspace set.
+It will be automatically changed if 0 and a drawing operation occurs or an input is successfully queried via input_info(). / languages:eel2
+param_wet:if in FX form, wet/dry mix of effect. / languages:eel2
+param1..param24:Hold the values for the individual parameters, means param1 hold the value for parameter 1 .. param24 for parameter 24. / languages:eel2
+gfx_r:current drawing color (red 0..1) / languages:eel2
+gfx_g:current drawing color (green 0..1) / languages:eel2
+gfx_b:current drawing color (blue 0..1) / languages:eel2
+gfx_a:current drawing color (alpha 0..1) / languages:eel2
+gfx_a2:current drawing color alpha channel value (RGB-only, 0..1, defaults to 1) / languages:eel2
+gfx_mode:drawing mode
+0 = normal
+1 = additive
+3 = multiply (very different in YUV vs RGBA)
+17 = (dest + src*gfx_a)*.5 + .5 (only valid when using YUV colorspaces)
+18 = dest + (src-0.5)*gfx_a*2.0 (only valid when using YUV colorspaces)
+19 = absolute difference: abs(dest-src)*gfx_a (only valid when using YUV colorspaces)
+0x100 (flag ORed to above mode) for blit() to enable filtering (if possible)
+0x10000 (flag ORed to above mode) to use source alpha (only valid when using RGBA colorspace)
+0x40000 (flag ORed to above mode) to use extra clamping in normal mode (for out of range alpha/gradient values)
+0x80000 (flag ORed to above mode) to interpret gfx_r/gfx_g/gfx_b as YUV values (in YUV colorspaces) / languages:eel2
+gfx_dest:destination image handle, or -1 for main framebuffer / languages:eel2
+gmem:gmem[] can be used for a shared memory buffer (similar to JSFX) --
+you can specify a named buffer which can be shared with EEL2 ReaScripts and JSFX, by using:
+//@gmem=sharedBufferName
+on a line by itself.
+Note that when synchronizing with ReaScripts or JSFX, all processing is asynchronous, so your code will have to deal with
+synchronization issues (including vast differences between project_time and playback_position, and including race conditions).
+To get/set values from gmem, use gmem[index].
+Example:
+variable=gmem[7]; // put the value from gmem with index 7 into variable
+gmem[8]=project_time; // put the current project_time into gmem with index 8 / languages:eel2
