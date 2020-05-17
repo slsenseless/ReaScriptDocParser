@@ -96,6 +96,8 @@ def build_usdoc(us_path: str, output_file: str):
 
     us_file = open(output_file, "a")
     for file in glob.iglob(us_path + '/**/*.lua', recursive=True):
+        if re.search(r"_beta\.lua$", file) is not None:
+            continue
         with open(file, 'r', encoding='utf8', errors='replace') as f:
             data = f.read()
             regex: str = r"function ultraschall\..*?\(.*?\)[\s\n]*--\[\[[\s\n]*(<US_DocBloc(?:.|\n)*?/US_DocBloc>)"
