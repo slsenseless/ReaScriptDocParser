@@ -4444,6 +4444,58 @@ markrgnidx:the id of the marker within the project, 0 for the first, 1 for the s
 RETURNS:
 Boolean:true, deleting was successful; false, deleting was unsuccessful.
 ------
+name:DeleteTakeMarker
+language:cpp
+return:(bool:retval)
+params:(MediaItem_Take*:take), (int:idx)
+description:
+Delete a take marker. Note that idx will change for all following take markers.
+See GetNumTakeMarkers](#GetNumTakeMarkers)), [GetTakeMarker](#GetTakeMarker) and [SetTakeMarker.
+PARAMETERS:
+take:the take, whose take-marker you want to delete
+idx:the id of the marker within the take, 0 for the first, 1 for the second, etc.
+RETURNS:
+retval:true, deleting was successful; false, deleting was unsuccessful.
+------
+name:DeleteTakeMarker
+language:eel
+return:(bool:retval)
+params:(MediaItem_Take:take), (int:idx)
+description:
+Delete a take marker. Note that idx will change for all following take markers.
+See GetNumTakeMarkers](#GetNumTakeMarkers)), GetTakeMarker and [SetTakeMarker.
+PARAMETERS:
+take:the take, whose take-marker you want to delete
+idx:the id of the marker within the take, 0 for the first, 1 for the second, etc.
+RETURNS:
+retval:true, deleting was successful; false, deleting was unsuccessful.
+------
+name:reaper.DeleteTakeMarker
+language:lua
+return:(boolean:retval)
+params:(MediaItem_Take:take), (integer:idx)
+description:
+Delete a take marker. Note that idx will change for all following take markers.
+See GetNumTakeMarkers](#GetNumTakeMarkers)), GetTakeMarker and [SetTakeMarker.
+PARAMETERS:
+take:the take, whose take-marker you want to delete
+idx:the id of the marker within the take, 0 for the first, 1 for the second, etc.
+RETURNS:
+retval:true, deleting was successful; false, deleting was unsuccessful.
+------
+name:RPR_DeleteTakeMarker
+language:python
+return:(Boolean:retval)
+params:(MediaItem_Take:take), (Int:idx)
+description:
+Delete a take marker. Note that idx will change for all following take markers.
+See GetNumTakeMarkers](#GetNumTakeMarkers)), GetTakeMarker and [SetTakeMarker.
+PARAMETERS:
+take:the take, whose take-marker you want to delete
+idx:the id of the marker within the take, 0 for the first, 1 for the second, etc.
+RETURNS:
+retval:true, deleting was successful; false, deleting was unsuccessful.
+------
 name:DeleteTakeStretchMarkers
 language:cpp
 return:(int:)
@@ -8470,7 +8522,7 @@ D_PITCH : double * : take pitch adjustment in semitones, -12=one octave down, 0=
 B_PPITCH : bool * : preserve pitch when changing playback rate
 I_CHANMODE : int * : channel mode, 0=normal, 1=reverse stereo, 2=downmix, 3=left, 4=right
 I_PITCHMODE : int * : pitch shifter mode, -1=projext default, otherwise high 2 bytes=shifter, low 2 bytes=parameter
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 IP_TAKENUMBER : int : take number (read-only, returns the take number directly)
 P_TRACK : pointer to MediaTrack (read-only)
 P_ITEM : pointer to MediaItem (read-only)
@@ -8491,7 +8543,7 @@ D_PITCH : double * : take pitch adjustment in semitones, -12=one octave down, 0=
 B_PPITCH : bool * : preserve pitch when changing playback rate
 I_CHANMODE : int * : channel mode, 0=normal, 1=reverse stereo, 2=downmix, 3=left, 4=right
 I_PITCHMODE : int * : pitch shifter mode, -1=projext default, otherwise high 2 bytes=shifter, low 2 bytes=parameter
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 IP_TAKENUMBER : int : take number (read-only, returns the take number directly)
 P_TRACK : pointer to MediaTrack (read-only)
 P_ITEM : pointer to MediaItem (read-only)
@@ -8514,7 +8566,7 @@ D_PITCH : double * : take pitch adjustment in semitones, -12=one octave down, 0=
 B_PPITCH : bool * : preserve pitch when changing playback rate
 I_CHANMODE : int * : channel mode, 0=normal, 1=reverse stereo, 2=downmix, 3=left, 4=right
 I_PITCHMODE : int * : pitch shifter mode, -1=projext default, otherwise high 2 bytes=shifter, low 2 bytes=parameter
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 IP_TAKENUMBER : int : take number (read-only, returns the take number directly)
 P_TRACK : pointer to MediaTrack (read-only)
 P_ITEM : pointer to MediaItem (read-only)
@@ -8537,7 +8589,7 @@ D_PITCH : double * : take pitch adjustment in semitones, -12=one octave down, 0=
 B_PPITCH : bool * : preserve pitch when changing playback rate
 I_CHANMODE : int * : channel mode, 0=normal, 1=reverse stereo, 2=downmix, 3=left, 4=right
 I_PITCHMODE : int * : pitch shifter mode, -1=projext default, otherwise high 2 bytes=shifter, low 2 bytes=parameter
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 IP_TAKENUMBER : int : take number (read-only, returns the take number directly)
 P_TRACK : pointer to MediaTrack (read-only)
 P_ITEM : pointer to MediaItem (read-only)
@@ -8785,7 +8837,7 @@ I_FOLDERDEPTH : int * : folder depth change, 0=normal, 1=track is a folder paren
 I_FOLDERCOMPACT : int * : folder compacted state (only valid on folders), 0=normal, 1=small, 2=tiny children
 I_MIDIHWOUT : int * : track midi hardware output index, <0=disabled, low 5 bits are which channels (0=all, 1-16), next 5 bits are output device index (0-31)
 I_PERFFLAGS : int * : track performance flags, &1=no media buffering, &2=no anticipative FX
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 I_HEIGHTOVERRIDE : int * : custom height override for TCP window, 0 for none, otherwise size in pixels
 B_HEIGHTLOCK : bool * : track height lock (must set I_HEIGHTOVERRIDE before locking)
 D_VOL : double * : trim volume of track, 0=-inf, 0.5=-6dB, 1=+0dB, 2=+6dB, etc
@@ -8844,7 +8896,7 @@ I_FOLDERDEPTH : int * : folder depth change, 0=normal, 1=track is a folder paren
 I_FOLDERCOMPACT : int * : folder compacted state (only valid on folders), 0=normal, 1=small, 2=tiny children
 I_MIDIHWOUT : int * : track midi hardware output index, <0=disabled, low 5 bits are which channels (0=all, 1-16), next 5 bits are output device index (0-31)
 I_PERFFLAGS : int * : track performance flags, &1=no media buffering, &2=no anticipative FX
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 I_HEIGHTOVERRIDE : int * : custom height override for TCP window, 0 for none, otherwise size in pixels
 B_HEIGHTLOCK : bool * : track height lock (must set I_HEIGHTOVERRIDE before locking)
 D_VOL : double * : trim volume of track, 0=-inf, 0.5=-6dB, 1=+0dB, 2=+6dB, etc
@@ -8905,7 +8957,7 @@ I_FOLDERDEPTH : int * : folder depth change, 0=normal, 1=track is a folder paren
 I_FOLDERCOMPACT : int * : folder compacted state (only valid on folders), 0=normal, 1=small, 2=tiny children
 I_MIDIHWOUT : int * : track midi hardware output index, <0=disabled, low 5 bits are which channels (0=all, 1-16), next 5 bits are output device index (0-31)
 I_PERFFLAGS : int * : track performance flags, &1=no media buffering, &2=no anticipative FX
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 I_HEIGHTOVERRIDE : int * : custom height override for TCP window, 0 for none, otherwise size in pixels
 B_HEIGHTLOCK : bool * : track height lock (must set I_HEIGHTOVERRIDE before locking)
 D_VOL : double * : trim volume of track, 0=-inf, 0.5=-6dB, 1=+0dB, 2=+6dB, etc
@@ -8966,7 +9018,7 @@ I_FOLDERDEPTH : int * : folder depth change, 0=normal, 1=track is a folder paren
 I_FOLDERCOMPACT : int * : folder compacted state (only valid on folders), 0=normal, 1=small, 2=tiny children
 I_MIDIHWOUT : int * : track midi hardware output index, <0=disabled, low 5 bits are which channels (0=all, 1-16), next 5 bits are output device index (0-31)
 I_PERFFLAGS : int * : track performance flags, &1=no media buffering, &2=no anticipative FX
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 I_HEIGHTOVERRIDE : int * : custom height override for TCP window, 0 for none, otherwise size in pixels
 B_HEIGHTLOCK : bool * : track height lock (must set I_HEIGHTOVERRIDE before locking)
 D_VOL : double * : trim volume of track, 0=-inf, 0.5=-6dB, 1=+0dB, 2=+6dB, etc
@@ -9295,6 +9347,54 @@ description:
 returns max number of real midi hardware outputs
 RETURNS:
 Int:the number of real midi hardware outputs
+------
+name:GetNumTakeMarkers
+language:cpp
+return:(int:)
+params:(MediaItem_Take*:take)
+description:
+Returns number of take markers.
+See DeleteTakeMarker](#DeleteTakeMarker)), [GetTakeMarker](#GetTakeMarker) and [SetTakeMarker.
+PARAMETERS:
+take:the take, whose take-markers you want to count
+RETURNS:
+int:the number of found take-markers
+------
+name:GetNumTakeMarkers
+language:eel
+return:(int:)
+params:(MediaItem_Take:take)
+description:
+Returns number of take markers.
+See DeleteTakeMarker](#DeleteTakeMarker)), GetTakeMarker and [SetTakeMarker.
+PARAMETERS:
+take:the take, whose take-markers you want to count
+RETURNS:
+int:the number of found take-markers
+------
+name:reaper.GetNumTakeMarkers
+language:lua
+return:(integer:retval)
+params:(MediaItem_Take:take)
+description:
+Returns number of take markers.
+See DeleteTakeMarker](#DeleteTakeMarker)), GetTakeMarker and [SetTakeMarker.
+PARAMETERS:
+take:the take, whose take-markers you want to count
+RETURNS:
+retval:the number of found take-markers
+------
+name:RPR_GetNumTakeMarkers
+language:python
+return:(Int:)
+params:(MediaItem_Take:take)
+description:
+Returns number of take markers.
+See DeleteTakeMarker](#DeleteTakeMarker)), GetTakeMarker and [SetTakeMarker.
+PARAMETERS:
+take:the take, whose take-markers you want to count
+RETURNS:
+Int:the number of found take-markers
 ------
 name:GetNumTracks
 language:cpp
@@ -10936,7 +11036,7 @@ Valid input for parmname: P_NAME, P_EXT:xyz, GUID
 
 description:
 Gets/sets a take attribute string:
-P_NAME : char * to take name
+P_NAME : char * : take name
 P_EXT:xyz : char * : extension-specific persistent data
 GUID : GUID * : 16-byte GUID, can query or update. If using a _String() function, GUID is a string {xyz-...}.
 ------
@@ -10946,7 +11046,7 @@ return:(bool:)
 params:(MediaItem_Take:tk), ("parmname":), (#stringNeedBig:), (bool:setnewvalue)
 description:
 Gets/sets a take attribute string:
-P_NAME : char * to take name
+P_NAME : char * : take name
 P_EXT:xyz : char * : extension-specific persistent data
 GUID : GUID * : 16-byte GUID, can query or update. If using a _String() function, GUID is a string {xyz-...}.
 ------
@@ -10958,7 +11058,7 @@ Valid input for parmname: P_NAME, P_EXT:xyz, GUID
 
 description:
 Gets/sets a take attribute string:
-P_NAME : char * to take name
+P_NAME : char * : take name
 P_EXT:xyz : char * : extension-specific persistent data
 GUID : GUID * : 16-byte GUID, can query or update. If using a _String() function, GUID is a string {xyz-...}.
 ------
@@ -10968,7 +11068,7 @@ return:(Boolean:retval),(MediaItem_Take:tk),(String:parmname),(String:stringNeed
 params:(tk:), (parmname:), (stringNeedBig:), (setnewvalue:)
 description:
 Gets/sets a take attribute string:
-P_NAME : char * to take name
+P_NAME : char * : take name
 P_EXT:xyz : char * : extension-specific persistent data
 GUID : GUID * : 16-byte GUID, can query or update. If using a _String() function, GUID is a string {xyz-...}.
 ------
@@ -11121,7 +11221,8 @@ Valid input for desc: RENDER_SETTINGS, RENDER_BOUNDSFLAG, RENDER_CHANNELS, RENDE
 
 description:
 Get or set project information.
-RENDER_SETTINGS : &(1|2)=0:master mix, &1=stems+master mix, &2=stems only, &4=multichannel tracks to multichannel files, &8=use render matrix, &16=tracks with only mono media to mono files, &32=selected media items, &64=selected media items via master
+RENDER_SETTINGS : &(1|2)=0:master mix, &1=stems+master mix, &2=stems only, &4=multichannel tracks to multichannel files, &8=use render matrix, &16=tracks with only mono media to mono files, &32=selected media items, &64=selected media items via master, & 128=Selected tracks via master, &256=Stretch markers/transient guide-checkbox(Only with WAV/AIFF and Source=Selected media items/Selected media items via master), &1024=Take markers-checkbox(Only with WAV and Source=Selected media items/Selected media items via master)
+OGG, OPUS and FLAC support embedding of tempoinformation via metadata, settable using GetSetProjectInfo_String.
 RENDER_BOUNDSFLAG : 0=custom time bounds, 1=entire project, 2=time selection, 3=all project regions, 4=selected media items, 5=selected project regions
 RENDER_CHANNELS : number of channels in rendered file
 RENDER_SRATE : sample rate of rendered file (or 0 for project sample rate)
@@ -11129,15 +11230,16 @@ RENDER_STARTPOS : render start time when RENDER_BOUNDSFLAG=0
 RENDER_ENDPOS : render end time when RENDER_BOUNDSFLAG=0
 RENDER_TAILFLAG : apply render tail setting when rendering: &1=custom time bounds, &2=entire project, &4=time selection, &8=all project regions, &16=selected media items, &32=selected project regions
 RENDER_TAILMS : tail length in ms to render (only used if RENDER_BOUNDSFLAG and RENDER_TAILFLAG are set)
-RENDER_ADDTOPROJ : 1=add rendered files to project
+RENDER_ADDTOPROJ : &1=add rendered files to project, &2=Do not render files that are likely silent
 RENDER_DITHER : &1=dither, &2=noise shaping, &4=dither stems, &8=noise shaping on stems
 PROJECT_SRATE : samplerate (ignored unless PROJECT_SRATE_USE set)
 PROJECT_SRATE_USE : set to 1 if project samplerate is used
 PARAMETERS:
-project:            string desc - 
-is_set:        
+desc:the attribute you want to get/set, like RENDER_CHANNELS, PROJECT_SRATE, RENDER_SETTINGS, etc
+value:if is_set==true, this is the new value to set; if is_set==false, set this to 0
+is_set:true, set a new value; false, get the current value
 RETURNS:
-double:        
+double:the new/current value set with this attribute
 ------
 name:GetSetProjectInfo
 language:eel
@@ -11145,7 +11247,8 @@ return:(double:)
 params:(ReaProject:project), ("desc":), (value:), (bool:is_set)
 description:
 Get or set project information.
-RENDER_SETTINGS : &(1|2)=0:master mix, &1=stems+master mix, &2=stems only, &4=multichannel tracks to multichannel files, &8=use render matrix, &16=tracks with only mono media to mono files, &32=selected media items, &64=selected media items via master
+RENDER_SETTINGS : &(1|2)=0:master mix, &1=stems+master mix, &2=stems only, &4=multichannel tracks to multichannel files, &8=use render matrix, &16=tracks with only mono media to mono files, &32=selected media items, &64=selected media items via master, & 128=Selected tracks via master, &256=Stretch markers/transient guide-checkbox(Only with WAV/AIFF and Source=Selected media items/Selected media items via master), &1024=Take markers-checkbox(Only with WAV and Source=Selected media items/Selected media items via master)
+OGG, OPUS and FLAC support embedding of tempoinformation via metadata, settable using GetSetProjectInfo_String.
 RENDER_BOUNDSFLAG : 0=custom time bounds, 1=entire project, 2=time selection, 3=all project regions, 4=selected media items, 5=selected project regions
 RENDER_CHANNELS : number of channels in rendered file
 RENDER_SRATE : sample rate of rendered file (or 0 for project sample rate)
@@ -11153,17 +11256,16 @@ RENDER_STARTPOS : render start time when RENDER_BOUNDSFLAG=0
 RENDER_ENDPOS : render end time when RENDER_BOUNDSFLAG=0
 RENDER_TAILFLAG : apply render tail setting when rendering: &1=custom time bounds, &2=entire project, &4=time selection, &8=all project regions, &16=selected media items, &32=selected project regions
 RENDER_TAILMS : tail length in ms to render (only used if RENDER_BOUNDSFLAG and RENDER_TAILFLAG are set)
-RENDER_ADDTOPROJ : 1=add rendered files to project
+RENDER_ADDTOPROJ : &1=add rendered files to project, &2=Do not render files that are likely silent
 RENDER_DITHER : &1=dither, &2=noise shaping, &4=dither stems, &8=noise shaping on stems
 PROJECT_SRATE : samplerate (ignored unless PROJECT_SRATE_USE set)
 PROJECT_SRATE_USE : set to 1 if project samplerate is used
 PARAMETERS:
-project:            string desc - 
-:        
-:        
-is_set:        
+:true, set a new value; false, get the current value
+:true, set a new value; false, get the current value
+is_set:true, set a new value; false, get the current value
 RETURNS:
-double:        
+double:the new/current value set with this attribute
 ------
 name:reaper.GetSetProjectInfo
 language:lua
@@ -11173,7 +11275,8 @@ Valid input for desc: RENDER_SETTINGS, RENDER_BOUNDSFLAG, RENDER_CHANNELS, RENDE
 
 description:
 Get or set project information.
-RENDER_SETTINGS : &(1|2)=0:master mix, &1=stems+master mix, &2=stems only, &4=multichannel tracks to multichannel files, &8=use render matrix, &16=tracks with only mono media to mono files, &32=selected media items, &64=selected media items via master
+RENDER_SETTINGS : &(1|2)=0:master mix, &1=stems+master mix, &2=stems only, &4=multichannel tracks to multichannel files, &8=use render matrix, &16=tracks with only mono media to mono files, &32=selected media items, &64=selected media items via master, & 128=Selected tracks via master, &256=Stretch markers/transient guide-checkbox(Only with WAV/AIFF and Source=Selected media items/Selected media items via master), &1024=Take markers-checkbox(Only with WAV and Source=Selected media items/Selected media items via master)
+OGG, OPUS and FLAC support embedding of tempoinformation via metadata, settable using GetSetProjectInfo_String.
 RENDER_BOUNDSFLAG : 0=custom time bounds, 1=entire project, 2=time selection, 3=all project regions, 4=selected media items, 5=selected project regions
 RENDER_CHANNELS : number of channels in rendered file
 RENDER_SRATE : sample rate of rendered file (or 0 for project sample rate)
@@ -11181,15 +11284,16 @@ RENDER_STARTPOS : render start time when RENDER_BOUNDSFLAG=0
 RENDER_ENDPOS : render end time when RENDER_BOUNDSFLAG=0
 RENDER_TAILFLAG : apply render tail setting when rendering: &1=custom time bounds, &2=entire project, &4=time selection, &8=all project regions, &16=selected media items, &32=selected project regions
 RENDER_TAILMS : tail length in ms to render (only used if RENDER_BOUNDSFLAG and RENDER_TAILFLAG are set)
-RENDER_ADDTOPROJ : 1=add rendered files to project
+RENDER_ADDTOPROJ : &1=add rendered files to project, &2=Do not render files that are likely silent
 RENDER_DITHER : &1=dither, &2=noise shaping, &4=dither stems, &8=noise shaping on stems
 PROJECT_SRATE : samplerate (ignored unless PROJECT_SRATE_USE set)
 PROJECT_SRATE_USE : set to 1 if project samplerate is used
 PARAMETERS:
-project:            string desc - 
-is_set:        
+desc:the attribute you want to get/set, like RENDER_CHANNELS, PROJECT_SRATE, RENDER_SETTINGS, etc
+value:if is_set==true, this is the new value to set; if is_set==false, set this to 0
+is_set:true, set a new value; false, get the current value
 RETURNS:
-value:        
+value:the new/current value set with this attribute
 ------
 name:RPR_GetSetProjectInfo
 language:python
@@ -11199,7 +11303,8 @@ Valid input for desc: RENDER_SETTINGS, RENDER_BOUNDSFLAG, RENDER_CHANNELS, RENDE
 
 description:
 Get or set project information.
-RENDER_SETTINGS : &(1|2)=0:master mix, &1=stems+master mix, &2=stems only, &4=multichannel tracks to multichannel files, &8=use render matrix, &16=tracks with only mono media to mono files, &32=selected media items, &64=selected media items via master
+RENDER_SETTINGS : &(1|2)=0:master mix, &1=stems+master mix, &2=stems only, &4=multichannel tracks to multichannel files, &8=use render matrix, &16=tracks with only mono media to mono files, &32=selected media items, &64=selected media items via master, & 128=Selected tracks via master, &256=Stretch markers/transient guide-checkbox(Only with WAV/AIFF and Source=Selected media items/Selected media items via master), &1024=Take markers-checkbox(Only with WAV and Source=Selected media items/Selected media items via master)
+OGG, OPUS and FLAC support embedding of tempoinformation via metadata, settable using GetSetProjectInfo_String.
 RENDER_BOUNDSFLAG : 0=custom time bounds, 1=entire project, 2=time selection, 3=all project regions, 4=selected media items, 5=selected project regions
 RENDER_CHANNELS : number of channels in rendered file
 RENDER_SRATE : sample rate of rendered file (or 0 for project sample rate)
@@ -11207,21 +11312,22 @@ RENDER_STARTPOS : render start time when RENDER_BOUNDSFLAG=0
 RENDER_ENDPOS : render end time when RENDER_BOUNDSFLAG=0
 RENDER_TAILFLAG : apply render tail setting when rendering: &1=custom time bounds, &2=entire project, &4=time selection, &8=all project regions, &16=selected media items, &32=selected project regions
 RENDER_TAILMS : tail length in ms to render (only used if RENDER_BOUNDSFLAG and RENDER_TAILFLAG are set)
-RENDER_ADDTOPROJ : 1=add rendered files to project
+RENDER_ADDTOPROJ : &1=add rendered files to project, &2=Do not render files that are likely silent
 RENDER_DITHER : &1=dither, &2=noise shaping, &4=dither stems, &8=noise shaping on stems
 PROJECT_SRATE : samplerate (ignored unless PROJECT_SRATE_USE set)
 PROJECT_SRATE_USE : set to 1 if project samplerate is used
 PARAMETERS:
-project:            string desc - 
-is_set:        
+desc:the attribute you want to get/set, like RENDER_CHANNELS, PROJECT_SRATE, RENDER_SETTINGS, etc
+value:if is_set==true, this is the new value to set; if is_set==false, set this to 0
+is_set:true, set a new value; false, get the current value
 RETURNS:
-Float:        
+Float:the new/current value set with this attribute
 ------
 name:GetSetProjectInfo_String
 language:cpp
 return:(bool:)
 params:(ReaProject*:project), (const char*:desc), (char*:valuestrNeedBig), (bool:is_set)
-Valid input for desc: MARKER_GUID:X, RECORD_PATH, RENDER_FILE, RENDER_PATTERN, RENDER_FORMAT, RENDER_FORMAT2
+Valid input for desc: MARKER_GUID:X, RECORD_PATH, RENDER_FILE, RENDER_PATTERN, RENDER_TARGETS, RENDER_FORMAT, RENDER_FORMAT2, RENDER_METADATA
 
 description:
 Get or set project information.
@@ -11229,14 +11335,44 @@ MARKER\_GUID:X : get the GUID (unique ID) of the marker or region with index X, 
 RECORD\_PATH: recording directory -- may be blank or a relative path, to get the effective path see GetProjectPathEx
 RENDER\_FILE: render directory
 RENDER\_PATTERN: render file name (may contain wildcards)
+RENDER\_TARGETS: semicolon separated list of files that would be written if the project is rendered using the most recent render settings
 RENDER\_FORMAT: base64-encoded sink configuration (see project files, etc). Callers can also pass a simple 4-byte string (non-base64-encoded), to use default settings for that sink type.
+RENDER\_FORMAT2: base64-encoded secondary sink configuration. Callers can also pass a simple 4-byte string (non-base64-encoded), e.g. "evaw" or "l3pm", to use default settings for that sink type, or "" to disable secondary render.
 see [render-code-documentation](render-codes-decoded-base64-strings.txt) for how the unencoded RENDER_FORMAT-string is structured.
-RENDER\_FORMAT2 : base64-encoded secondary sink configuration. Callers
-can also pass a simple 4-byte string (non-base64-encoded), e.g. "evaw"
-or "l3pm", to use default settings for that sink type, or "" to disable
-secondary render.
 To just use the 4-byte-string, you can use:
 "evaw" for wave, "ffia" for aiff, " osi" for audio-cd, " pdd" for ddp, "calf" for flac, "l3pm" for mp3, "vggo" for ogg, "SggO" for Opus, "PMFF" for FFMpeg-video, "FVAX" for MP4Video/Audio on Mac, " FIG" for Gif, " FCL" for LCF, "kpvw" for wavepack
+RENDER_METADATA: get or set the metadata saved with the project (not metadata embedded in project media). Example, ID3 album name metadata: Uses common ID3-tagcodes like TALB(album), TPE1(Artist), etc.
+To get album tag, use "ID3:TALB", to set album tag, use "ID3:TALB|my album name".
+Supported tags-codes are: TIT2(Title), TPE1(Artist), TPE2(Albumartist), TALB(Album), TRCK(Track), TCON(Genre), TYER(Year), TDRC(Recording time: YYYY-MM-DD), TKEY(Key), TBPM(Tempo), TSRC(International Standard Recording Code), COMM(Comment), COMM_LANG(Comment language), APIC_TYPE(Image type), APIC_DESC(Image description), APIC_FILE(Image file)
+APIC_TYPE can have be of the following:
+0: Other
+1: 32x32 pixel file icon (PNG only)
+2: Other file icon
+3: Cover (front)
+4: Cover (back)
+5: Leaflet page
+6: Media
+7: Lead artist/Lead Performer/Solo
+8: Artist/Performer
+9: Conductor
+10: Band/Orchestra
+11: Composer
+12: Lyricist/Text writer
+13: Recording location
+14: During recording
+15: During performance
+16: Movie/video screen capture
+17: A bright colored fish
+18: Illustration
+19: Band/Artist logotype
+20: Publisher/Studiotype
+PARAMETERS:
+project:the project, whose setting you want to get or set
+desc:the setting, that you want to get/set; refer description for available ones
+valuestrNeedBig:if is_set==true, this is the new value to set
+is_set:true, set a new value; false, just get the current one
+RETURNS:
+bool:the current value for this project-setting
 ------
 name:GetSetProjectInfo_String
 language:eel
@@ -11248,20 +11384,50 @@ MARKER\_GUID:X : get the GUID (unique ID) of the marker or region with index X, 
 RECORD\_PATH: recording directory -- may be blank or a relative path, to get the effective path see GetProjectPathEx
 RENDER\_FILE: render directory
 RENDER\_PATTERN: render file name (may contain wildcards)
+RENDER\_TARGETS: semicolon separated list of files that would be written if the project is rendered using the most recent render settings
 RENDER\_FORMAT: base64-encoded sink configuration (see project files, etc). Callers can also pass a simple 4-byte string (non-base64-encoded), to use default settings for that sink type.
+RENDER\_FORMAT2: base64-encoded secondary sink configuration. Callers can also pass a simple 4-byte string (non-base64-encoded), e.g. "evaw" or "l3pm", to use default settings for that sink type, or "" to disable secondary render.
 see [render-code-documentation](render-codes-decoded-base64-strings.txt) for how the unencoded RENDER_FORMAT-string is structured.
-RENDER\_FORMAT2 : base64-encoded secondary sink configuration. Callers
-can also pass a simple 4-byte string (non-base64-encoded), e.g. "evaw"
-or "l3pm", to use default settings for that sink type, or "" to disable
-secondary render.
 To just use the 4-byte-string, you can use:
 "evaw" for wave, "ffia" for aiff, " osi" for audio-cd, " pdd" for ddp, "calf" for flac, "l3pm" for mp3, "vggo" for ogg, "SggO" for Opus, "PMFF" for FFMpeg-video, "FVAX" for MP4Video/Audio on Mac, " FIG" for Gif, " FCL" for LCF, "kpvw" for wavepack
+RENDER_METADATA: get or set the metadata saved with the project (not metadata embedded in project media). Example, ID3 album name metadata: Uses common ID3-tagcodes like TALB(album), TPE1(Artist), etc.
+To get album tag, use "ID3:TALB", to set album tag, use "ID3:TALB|my album name".
+Supported tags-codes are: TIT2(Title), TPE1(Artist), TPE2(Albumartist), TALB(Album), TRCK(Track), TCON(Genre), TYER(Year), TDRC(Recording time: YYYY-MM-DD), TKEY(Key), TBPM(Tempo), TSRC(International Standard Recording Code), COMM(Comment), COMM_LANG(Comment language), APIC_TYPE(Image type), APIC_DESC(Image description), APIC_FILE(Image file)
+APIC_TYPE can have be of the following:
+0: Other
+1: 32x32 pixel file icon (PNG only)
+2: Other file icon
+3: Cover (front)
+4: Cover (back)
+5: Leaflet page
+6: Media
+7: Lead artist/Lead Performer/Solo
+8: Artist/Performer
+9: Conductor
+10: Band/Orchestra
+11: Composer
+12: Lyricist/Text writer
+13: Recording location
+14: During recording
+15: During performance
+16: Movie/video screen capture
+17: A bright colored fish
+18: Illustration
+19: Band/Artist logotype
+20: Publisher/Studiotype
+PARAMETERS:
+project:the project, whose setting you want to get or set
+:true, set a new value; false, just get the current one
+:true, set a new value; false, just get the current one
+is_set:true, set a new value; false, just get the current one
+RETURNS:
+bool:the current value for this project-setting
 ------
 name:reaper.GetSetProjectInfo_String
 language:lua
 return:(boolean:retval),(string:valuestrNeedBig)
 params:(ReaProject:project), (string:desc), (string:valuestrNeedBig), (boolean:is_set)
-Valid input for desc: MARKER_GUID:X, RECORD_PATH, RENDER_FILE, RENDER_PATTERN, RENDER_FORMAT, RENDER_FORMAT2
+Valid input for desc: MARKER_GUID:X, RECORD_PATH, RENDER_FILE, RENDER_PATTERN, RENDER_TARGETS, RENDER_FORMAT, RENDER_FORMAT2, RENDER_METADATA
 
 description:
 Get or set project information.
@@ -11269,14 +11435,45 @@ MARKER\_GUID:X : get the GUID (unique ID) of the marker or region with index X, 
 RECORD\_PATH: recording directory -- may be blank or a relative path, to get the effective path see GetProjectPathEx
 RENDER\_FILE: render directory
 RENDER\_PATTERN: render file name (may contain wildcards)
+RENDER\_TARGETS: semicolon separated list of files that would be written if the project is rendered using the most recent render settings
 RENDER\_FORMAT: base64-encoded sink configuration (see project files, etc). Callers can also pass a simple 4-byte string (non-base64-encoded), to use default settings for that sink type.
+RENDER\_FORMAT2: base64-encoded secondary sink configuration. Callers can also pass a simple 4-byte string (non-base64-encoded), e.g. "evaw" or "l3pm", to use default settings for that sink type, or "" to disable secondary render.
 see [render-code-documentation](render-codes-decoded-base64-strings.txt) for how the unencoded RENDER_FORMAT-string is structured.
-RENDER\_FORMAT2 : base64-encoded secondary sink configuration. Callers
-can also pass a simple 4-byte string (non-base64-encoded), e.g. "evaw"
-or "l3pm", to use default settings for that sink type, or "" to disable
-secondary render.
 To just use the 4-byte-string, you can use:
 "evaw" for wave, "ffia" for aiff, " osi" for audio-cd, " pdd" for ddp, "calf" for flac, "l3pm" for mp3, "vggo" for ogg, "SggO" for Opus, "PMFF" for FFMpeg-video, "FVAX" for MP4Video/Audio on Mac, " FIG" for Gif, " FCL" for LCF, "kpvw" for wavepack
+RENDER_METADATA: get or set the metadata saved with the project (not metadata embedded in project media). Example, ID3 album name metadata: Uses common ID3-tagcodes like TALB(album), TPE1(Artist), etc.
+To get album tag, use "ID3:TALB", to set album tag, use "ID3:TALB|my album name".
+Supported tags-codes are: TIT2(Title), TPE1(Artist), TPE2(Albumartist), TALB(Album), TRCK(Track), TCON(Genre), TYER(Year), TDRC(Recording time: YYYY-MM-DD), TKEY(Key), TBPM(Tempo), TSRC(International Standard Recording Code), COMM(Comment), COMM_LANG(Comment language), APIC_TYPE(Image type), APIC_DESC(Image description), APIC_FILE(Image file)
+APIC_TYPE can have be of the following:
+0: Other
+1: 32x32 pixel file icon (PNG only)
+2: Other file icon
+3: Cover (front)
+4: Cover (back)
+5: Leaflet page
+6: Media
+7: Lead artist/Lead Performer/Solo
+8: Artist/Performer
+9: Conductor
+10: Band/Orchestra
+11: Composer
+12: Lyricist/Text writer
+13: Recording location
+14: During recording
+15: During performance
+16: Movie/video screen capture
+17: A bright colored fish
+18: Illustration
+19: Band/Artist logotype
+20: Publisher/Studiotype
+PARAMETERS:
+project:the project, whose setting you want to get or set
+desc:the setting, that you want to get/set; refer description for available ones
+valuestrNeedBig:if is_set==true, this is the new value to set
+is_set:true, set a new value; false, just get the current one
+RETURNS:
+retval:true, value can be set/get; false, value can't be set/get
+valuestrNeedBig:the current value for this project-setting
 ------
 name:RPR_GetSetProjectInfo_String
 language:python
@@ -11288,14 +11485,45 @@ MARKER\_GUID:X : get the GUID (unique ID) of the marker or region with index X, 
 RECORD\_PATH: recording directory -- may be blank or a relative path, to get the effective path see GetProjectPathEx
 RENDER\_FILE: render directory
 RENDER\_PATTERN: render file name (may contain wildcards)
+RENDER\_TARGETS: semicolon separated list of files that would be written if the project is rendered using the most recent render settings
 RENDER\_FORMAT: base64-encoded sink configuration (see project files, etc). Callers can also pass a simple 4-byte string (non-base64-encoded), to use default settings for that sink type.
+RENDER\_FORMAT2: base64-encoded secondary sink configuration. Callers can also pass a simple 4-byte string (non-base64-encoded), e.g. "evaw" or "l3pm", to use default settings for that sink type, or "" to disable secondary render.
 see [render-code-documentation](render-codes-decoded-base64-strings.txt) for how the unencoded RENDER_FORMAT-string is structured.
-RENDER\_FORMAT2 : base64-encoded secondary sink configuration. Callers
-can also pass a simple 4-byte string (non-base64-encoded), e.g. "evaw"
-or "l3pm", to use default settings for that sink type, or "" to disable
-secondary render.
 To just use the 4-byte-string, you can use:
 "evaw" for wave, "ffia" for aiff, " osi" for audio-cd, " pdd" for ddp, "calf" for flac, "l3pm" for mp3, "vggo" for ogg, "SggO" for Opus, "PMFF" for FFMpeg-video, "FVAX" for MP4Video/Audio on Mac, " FIG" for Gif, " FCL" for LCF, "kpvw" for wavepack
+RENDER_METADATA: get or set the metadata saved with the project (not metadata embedded in project media). Example, ID3 album name metadata: Uses common ID3-tagcodes like TALB(album), TPE1(Artist), etc.
+To get album tag, use "ID3:TALB", to set album tag, use "ID3:TALB|my album name".
+Supported tags-codes are: TIT2(Title), TPE1(Artist), TPE2(Albumartist), TALB(Album), TRCK(Track), TCON(Genre), TYER(Year), TDRC(Recording time: YYYY-MM-DD), TKEY(Key), TBPM(Tempo), TSRC(International Standard Recording Code), COMM(Comment), COMM_LANG(Comment language), APIC_TYPE(Image type), APIC_DESC(Image description), APIC_FILE(Image file)
+APIC_TYPE can have be of the following:
+0: Other
+1: 32x32 pixel file icon (PNG only)
+2: Other file icon
+3: Cover (front)
+4: Cover (back)
+5: Leaflet page
+6: Media
+7: Lead artist/Lead Performer/Solo
+8: Artist/Performer
+9: Conductor
+10: Band/Orchestra
+11: Composer
+12: Lyricist/Text writer
+13: Recording location
+14: During recording
+15: During performance
+16: Movie/video screen capture
+17: A bright colored fish
+18: Illustration
+19: Band/Artist logotype
+20: Publisher/Studiotype
+PARAMETERS:
+:true, set a new value; false, just get the current one
+:true, set a new value; false, just get the current one
+:true, set a new value; false, just get the current one
+:true, set a new value; false, just get the current one
+RETURNS:
+retval:true, value can be set/get; false, value can't be set/get
+valuestrNeedBig:the current value for this project-setting
 ------
 name:GetSetProjectNotes
 language:cpp
@@ -11752,6 +11980,64 @@ return:(TrackEnvelope:)
 params:(MediaItem_Take:take), (String:envname)
 description:
 
+------
+name:GetTakeMarker
+language:cpp
+return:(double:position)
+params:(MediaItem_Take*:take), (int:idx), (char*:nameOut), (int:nameOut_sz), (int*:colorOutOptional)
+description:
+Get information about a take marker. Returns the position in media item source time, or -1 if the take marker does not exist.
+See GetNumTakeMarkers](#GetNumTakeMarkers)), [DeleteTakeMarker](#DeleteTakeMarker) and [SetTakeMarker.
+PARAMETERS:
+take:the take, whose take-marker you want to get
+idx:the id of the marker within the take, 0 for the first, 1 for the second, etc.
+RETURNS:
+position:the position of the takemarker within the take in seconds
+------
+name:GetTakeMarker
+language:eel
+return:(double:position)
+params:(MediaItem_Take:take), (int:idx), (#name:), (optional int:&color)
+description:
+Get information about a take marker. Returns the position in media item source time, or -1 if the take marker does not exist.
+See GetNumTakeMarkers](#GetNumTakeMarkers)), DeleteTakeMarker and [SetTakeMarker.
+PARAMETERS:
+take:the take, whose take-marker you want to get
+idx:the id of the marker within the take, 0 for the first, 1 for the second, etc.
+:the id of the marker within the take, 0 for the first, 1 for the second, etc.
+RETURNS:
+position:the position of the takemarker within the take in seconds
+------
+name:reaper.GetTakeMarker
+language:lua
+return:(number:position),(string:name),(optional number:color)
+params:(MediaItem_Take:take), (integer:idx)
+description:
+Get information about a take marker. Returns the position in media item source time, or -1 if the take marker does not exist.
+See GetNumTakeMarkers](#GetNumTakeMarkers)), DeleteTakeMarker and [SetTakeMarker.
+PARAMETERS:
+take:the take, whose take-marker you want to get
+idx:the id of the marker within the take, 0 for the first, 1 for the second, etc.
+RETURNS:
+position:the position of the takemarker within the take in seconds
+name:the name of the takemarker
+color:the color of the takemarker
+------
+name:RPR_GetTakeMarker
+language:python
+return:(Float:position),(MediaItem_Take:take),(Int:idx),(String:nameOut),(Int:nameOut_sz),(Int:colorOutOptional)
+params:(take:), (idx:), (nameOut:), (nameOut_sz:), (colorOutOptional:)
+description:
+Get information about a take marker. Returns the position in media item source time, or -1 if the take marker does not exist.
+See GetNumTakeMarkers](#GetNumTakeMarkers)), DeleteTakeMarker and [SetTakeMarker.
+PARAMETERS:
+:the id of the marker within the take, 0 for the first, 1 for the second, etc.
+:the id of the marker within the take, 0 for the first, 1 for the second, etc.
+:the id of the marker within the take, 0 for the first, 1 for the second, etc.
+:the id of the marker within the take, 0 for the first, 1 for the second, etc.
+:the id of the marker within the take, 0 for the first, 1 for the second, etc.
+RETURNS:
+position:the position of the takemarker within the take in seconds
 ------
 name:GetTakeName
 language:cpp
@@ -18953,7 +19239,7 @@ C_FADEOUTSHAPE : int * : fadeout shape, 0..6, 0=linear
 I_GROUPID : int * : group ID, 0=no group
 I_LASTY : int * : Y-position of track in pixels (read-only)
 I_LASTH : int * : height in track in pixels (read-only)
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 I_CURTAKE : int * : active take number
 IP_ITEMNUMBER : int, item number on this track (read-only, returns the item number directly)
 F_FREEMODE_Y : float * : free item positioning Y-position, 0=top of track, 1=bottom of track (will never be 1)
@@ -18987,7 +19273,7 @@ C_FADEOUTSHAPE : int * : fadeout shape, 0..6, 0=linear
 I_GROUPID : int * : group ID, 0=no group
 I_LASTY : int * : Y-position of track in pixels (read-only)
 I_LASTH : int * : height in track in pixels (read-only)
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 I_CURTAKE : int * : active take number
 IP_ITEMNUMBER : int, item number on this track (read-only, returns the item number directly)
 F_FREEMODE_Y : float * : free item positioning Y-position, 0=top of track, 1=bottom of track (will never be 1)
@@ -19023,7 +19309,7 @@ C_FADEOUTSHAPE : int * : fadeout shape, 0..6, 0=linear
 I_GROUPID : int * : group ID, 0=no group
 I_LASTY : int * : Y-position of track in pixels (read-only)
 I_LASTH : int * : height in track in pixels (read-only)
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 I_CURTAKE : int * : active take number
 IP_ITEMNUMBER : int, item number on this track (read-only, returns the item number directly)
 F_FREEMODE_Y : float * : free item positioning Y-position, 0=top of track, 1=bottom of track (will never be 1)
@@ -19059,7 +19345,7 @@ C_FADEOUTSHAPE : int * : fadeout shape, 0..6, 0=linear
 I_GROUPID : int * : group ID, 0=no group
 I_LASTY : int * : Y-position of track in pixels (read-only)
 I_LASTH : int * : height in track in pixels (read-only)
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 I_CURTAKE : int * : active take number
 IP_ITEMNUMBER : int, item number on this track (read-only, returns the item number directly)
 F_FREEMODE_Y : float * : free item positioning Y-position, 0=top of track, 1=bottom of track (will never be 1)
@@ -19202,7 +19488,7 @@ D_PITCH : double * : take pitch adjustment in semitones, -12=one octave down, 0=
 B_PPITCH : bool * : preserve pitch when changing playback rate
 I_CHANMODE : int * : channel mode, 0=normal, 1=reverse stereo, 2=downmix, 3=left, 4=right
 I_PITCHMODE : int * : pitch shifter mode, -1=projext default, otherwise high 2 bytes=shifter, low 2 bytes=parameter
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 IP_TAKENUMBER : int : take number (read-only, returns the take number directly)
 ------
 name:SetMediaItemTakeInfo_Value
@@ -19220,7 +19506,7 @@ D_PITCH : double * : take pitch adjustment in semitones, -12=one octave down, 0=
 B_PPITCH : bool * : preserve pitch when changing playback rate
 I_CHANMODE : int * : channel mode, 0=normal, 1=reverse stereo, 2=downmix, 3=left, 4=right
 I_PITCHMODE : int * : pitch shifter mode, -1=projext default, otherwise high 2 bytes=shifter, low 2 bytes=parameter
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 IP_TAKENUMBER : int : take number (read-only, returns the take number directly)
 ------
 name:reaper.SetMediaItemTakeInfo_Value
@@ -19240,7 +19526,7 @@ D_PITCH : double * : take pitch adjustment in semitones, -12=one octave down, 0=
 B_PPITCH : bool * : preserve pitch when changing playback rate
 I_CHANMODE : int * : channel mode, 0=normal, 1=reverse stereo, 2=downmix, 3=left, 4=right
 I_PITCHMODE : int * : pitch shifter mode, -1=projext default, otherwise high 2 bytes=shifter, low 2 bytes=parameter
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 IP_TAKENUMBER : int : take number (read-only, returns the take number directly)
 ------
 name:RPR_SetMediaItemTakeInfo_Value
@@ -19260,7 +19546,7 @@ D_PITCH : double * : take pitch adjustment in semitones, -12=one octave down, 0=
 B_PPITCH : bool * : preserve pitch when changing playback rate
 I_CHANMODE : int * : channel mode, 0=normal, 1=reverse stereo, 2=downmix, 3=left, 4=right
 I_PITCHMODE : int * : pitch shifter mode, -1=projext default, otherwise high 2 bytes=shifter, low 2 bytes=parameter
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
 IP_TAKENUMBER : int : take number (read-only, returns the take number directly)
 ------
 name:SetMediaTrackInfo_Value
@@ -19295,8 +19581,8 @@ I_FOLDERDEPTH : int * : folder depth change, 0=normal, 1=track is a folder paren
 I_FOLDERCOMPACT : int * : folder compacted state (only valid on folders), 0=normal, 1=small, 2=tiny children
 I_MIDIHWOUT : int * : track midi hardware output index, <0=disabled, low 5 bits are which channels (0=all, 1-16), next 5 bits are output device index (0-31)
 I_PERFFLAGS : int * : track performance flags, &1=no media buffering, &2=no anticipative FX
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
-I_HEIGHTOVERRIDE : int * : custom height override for TCP window, 0 for none, otherwise size in pixels
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
+I_HEIGHTOVERRIDE : int * : custom height override for TCP window, 0 for none, otherwise size in pixels(use TrackList_AdjustWindows to update TCP after this.
 B_HEIGHTLOCK : bool * : track height lock (must set I_HEIGHTOVERRIDE before locking)
 D_VOL : double * : trim volume of track, 0=-inf, 0.5=-6dB, 1=+0dB, 2=+6dB, etc
 D_PAN : double * : trim pan of track, -1..1
@@ -19347,8 +19633,8 @@ I_FOLDERDEPTH : int * : folder depth change, 0=normal, 1=track is a folder paren
 I_FOLDERCOMPACT : int * : folder compacted state (only valid on folders), 0=normal, 1=small, 2=tiny children
 I_MIDIHWOUT : int * : track midi hardware output index, <0=disabled, low 5 bits are which channels (0=all, 1-16), next 5 bits are output device index (0-31)
 I_PERFFLAGS : int * : track performance flags, &1=no media buffering, &2=no anticipative FX
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
-I_HEIGHTOVERRIDE : int * : custom height override for TCP window, 0 for none, otherwise size in pixels
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
+I_HEIGHTOVERRIDE : int * : custom height override for TCP window, 0 for none, otherwise size in pixels(use TrackList_AdjustWindows to update TCP after this.
 B_HEIGHTLOCK : bool * : track height lock (must set I_HEIGHTOVERRIDE before locking)
 D_VOL : double * : trim volume of track, 0=-inf, 0.5=-6dB, 1=+0dB, 2=+6dB, etc
 D_PAN : double * : trim pan of track, -1..1
@@ -19401,8 +19687,8 @@ I_FOLDERDEPTH : int * : folder depth change, 0=normal, 1=track is a folder paren
 I_FOLDERCOMPACT : int * : folder compacted state (only valid on folders), 0=normal, 1=small, 2=tiny children
 I_MIDIHWOUT : int * : track midi hardware output index, <0=disabled, low 5 bits are which channels (0=all, 1-16), next 5 bits are output device index (0-31)
 I_PERFFLAGS : int * : track performance flags, &1=no media buffering, &2=no anticipative FX
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
-I_HEIGHTOVERRIDE : int * : custom height override for TCP window, 0 for none, otherwise size in pixels
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
+I_HEIGHTOVERRIDE : int * : custom height override for TCP window, 0 for none, otherwise size in pixels(use TrackList_AdjustWindows to update TCP after this.
 B_HEIGHTLOCK : bool * : track height lock (must set I_HEIGHTOVERRIDE before locking)
 D_VOL : double * : trim volume of track, 0=-inf, 0.5=-6dB, 1=+0dB, 2=+6dB, etc
 D_PAN : double * : trim pan of track, -1..1
@@ -19455,8 +19741,8 @@ I_FOLDERDEPTH : int * : folder depth change, 0=normal, 1=track is a folder paren
 I_FOLDERCOMPACT : int * : folder compacted state (only valid on folders), 0=normal, 1=small, 2=tiny children
 I_MIDIHWOUT : int * : track midi hardware output index, <0=disabled, low 5 bits are which channels (0=all, 1-16), next 5 bits are output device index (0-31)
 I_PERFFLAGS : int * : track performance flags, &1=no media buffering, &2=no anticipative FX
-I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway)
-I_HEIGHTOVERRIDE : int * : custom height override for TCP window, 0 for none, otherwise size in pixels
+I_CUSTOMCOLOR : int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color.
+I_HEIGHTOVERRIDE : int * : custom height override for TCP window, 0 for none, otherwise size in pixels(use TrackList_AdjustWindows to update TCP after this.
 B_HEIGHTLOCK : bool * : track height lock (must set I_HEIGHTOVERRIDE before locking)
 D_VOL : double * : trim volume of track, 0=-inf, 0.5=-6dB, 1=+0dB, 2=+6dB, etc
 D_PAN : double * : trim pan of track, -1..1
@@ -19634,7 +19920,8 @@ language:cpp
 return:(void:)
 params:(MediaTrack*:track)
 description:
-Set exactly one track selected, deselect all others
+Set exactly one track selected, deselect all others.
+This sets the track as Last-Touched-Track as well.
 PARAMETERS:
 track:the MediaTrack to be selected
 ------
@@ -19643,7 +19930,8 @@ language:eel
 return:
 params:(MediaTrack:track)
 description:
-Set exactly one track selected, deselect all others
+Set exactly one track selected, deselect all others.
+This sets the track as Last-Touched-Track as well.
 PARAMETERS:
 track:the MediaTrack to be selected
 ------
@@ -19652,7 +19940,8 @@ language:lua
 return:
 params:(MediaTrack:track)
 description:
-Set exactly one track selected, deselect all others
+Set exactly one track selected, deselect all others.
+This sets the track as Last-Touched-Track as well.
 PARAMETERS:
 track:the MediaTrack to be selected
 ------
@@ -19661,7 +19950,8 @@ language:python
 return:
 params:(MediaTrack:track)
 description:
-Set exactly one track selected, deselect all others
+Set exactly one track selected, deselect all others.
+This sets the track as Last-Touched-Track as well.
 PARAMETERS:
 track:the MediaTrack to be selected
 ------
@@ -20137,6 +20427,64 @@ Add (addorremove > 0) or remove (addorremove > 0) a track from this region when 
 PARAMETERS:
 proj:the project-number. 0 for the current project. Can also be a ReaProject-object, as returned by EnumProjects
 ------
+name:SetTakeMarker
+language:cpp
+return:(int:index)
+params:(MediaItem_Take*:take), (int:idx), (const char*:nameIn), (double*:srcposInOptional), (int*:colorInOptional)
+description:
+Inserts or updates a take marker. If idx<0, a take marker will be added, otherwise an existing take marker will be updated. Returns the index of the new or updated take marker (which may change if srcPos is updated).
+When inserting a new takemarker, parameter srcposIn must be given!
+See GetNumTakeMarkers](#GetNumTakeMarkers)), [GetTakeMarker](#GetTakeMarker) and [DeleteTakeMarker.
+PARAMETERS:
+take:the take, from which you want to set an existing takemarker or insert a new one
+idx:the index of the takemarker that you want to set; -1, adds a new takemarker
+nameIn:the name of the takemarker
+------
+name:SetTakeMarker
+language:eel
+return:(int:index)
+params:(MediaItem_Take:take), (int:idx), ("nameIn":), (optional:srcposIn), (optional int:colorIn)
+description:
+Inserts or updates a take marker. If idx<0, a take marker will be added, otherwise an existing take marker will be updated. Returns the index of the new or updated take marker (which may change if srcPos is updated).
+When inserting a new takemarker, parameter srcposIn must be given!
+See GetNumTakeMarkers](#GetNumTakeMarkers)), GetTakeMarker and [DeleteTakeMarker.
+PARAMETERS:
+take:the take, from which you want to set an existing takemarker or insert a new one
+idx:the index of the takemarker that you want to set; -1, adds a new takemarker
+:the color of the takemarker
+srcposIn:the position of the takemarker; omit if you want to keep the old position; must be given, when inserting a new takemarker
+colorIn:the color of the takemarker
+------
+name:reaper.SetTakeMarker
+language:lua
+return:(integer:index)
+params:(MediaItem_Take:take), (integer:idx), (string:nameIn), (optional number:srcposIn), (optional number:colorIn)
+description:
+Inserts or updates a take marker. If idx<0, a take marker will be added, otherwise an existing take marker will be updated. Returns the index of the new or updated take marker (which may change if srcPos is updated).
+When inserting a new takemarker, parameter srcposIn must be given!
+See GetNumTakeMarkers](#GetNumTakeMarkers)), GetTakeMarker and [DeleteTakeMarker.
+PARAMETERS:
+take:the take, from which you want to set an existing takemarker or insert a new one
+idx:the index of the takemarker that you want to set; -1, adds a new takemarker
+nameIn:the name of the takemarker
+srcposIn:the position of the takemarker; omit if you want to keep the old position; must be given, when inserting a new takemarker
+colorIn:the color of the takemarker
+------
+name:RPR_SetTakeMarker
+language:python
+return:(Int:index),(MediaItem_Take:take),(Int:idx),(String:nameIn),(Float:srcposInOptional),(Int:colorInOptional)
+params:(take:), (idx:), (nameIn:), (srcposInOptional:), (colorInOptional:)
+description:
+Inserts or updates a take marker. If idx<0, a take marker will be added, otherwise an existing take marker will be updated. Returns the index of the new or updated take marker (which may change if srcPos is updated).
+When inserting a new takemarker, parameter srcposIn must be given!
+See GetNumTakeMarkers](#GetNumTakeMarkers)), GetTakeMarker and [DeleteTakeMarker.
+PARAMETERS:
+:the color of the takemarker
+:the color of the takemarker
+:the color of the takemarker
+:the color of the takemarker
+:the color of the takemarker
+------
 name:SetTakeStretchMarker
 language:cpp
 return:(int:)
@@ -20435,6 +20783,7 @@ return:(void:)
 params:(MediaTrack*:track), (bool:selected)
 description:
 Set a MediaTrack selected/deselected. Will retain already existing selection, so you can set multiple tracks selected that way.
+Will not affect Last-Touched-Track.
 PARAMETERS:
 track:the MediaTrack, whose selection state you want to set
 selected:true, set MediaTrack to selected; false, set MediaTrack to deselected
@@ -20445,6 +20794,7 @@ return:
 params:(MediaTrack:track), (bool:selected)
 description:
 Set a MediaTrack selected/deselected. Will retain already existing selection, so you can set multiple tracks selected that way.
+Will not affect Last-Touched-Track.
 PARAMETERS:
 track:the MediaTrack, whose selection state you want to set
 selected:true, set MediaTrack to selected; false, set MediaTrack to deselected
@@ -20455,6 +20805,7 @@ return:
 params:(MediaTrack:track), (boolean:selected)
 description:
 Set a MediaTrack selected/deselected. Will retain already existing selection, so you can set multiple tracks selected that way.
+Will not affect Last-Touched-Track.
 PARAMETERS:
 track:the MediaTrack, whose selection state you want to set
 selected:true, set MediaTrack to selected; false, set MediaTrack to deselected
@@ -20465,6 +20816,7 @@ return:
 params:(MediaTrack:track), (Boolean:selected)
 description:
 Set a MediaTrack selected/deselected. Will retain already existing selection, so you can set multiple tracks selected that way.
+Will not affect Last-Touched-Track.
 PARAMETERS:
 track:the MediaTrack, whose selection state you want to set
 selected:true, set MediaTrack to selected; false, set MediaTrack to deselected
@@ -24733,28 +25085,36 @@ language:cpp
 return:(void:)
 params:(bool:isMinor)
 description:
-
+Updates the TCP and optionally the MCP. Helpful, when setting a new trackheight using I_HEIGHTOVERRIDE in SetMediaTrackInfo_Value.
+PARAMETERS:
+isMinor:false, updates only TCP; true, updates TCP and MCP
 ------
 name:TrackList_AdjustWindows
 language:eel
 return:
 params:(bool:isMinor)
 description:
-
+Updates the TCP and optionally the MCP. Helpful, when setting a new trackheight using I_HEIGHTOVERRIDE in SetMediaTrackInfo_Value.
+PARAMETERS:
+isMinor:false, updates only TCP; true, updates TCP and MCP
 ------
 name:reaper.TrackList_AdjustWindows
 language:lua
 return:
 params:(boolean:isMinor)
 description:
-
+Updates the TCP and optionally the MCP. Helpful, when setting a new trackheight using I_HEIGHTOVERRIDE in SetMediaTrackInfo_Value.
+PARAMETERS:
+isMinor:false, updates only TCP; true, updates TCP and MCP
 ------
 name:RPR_TrackList_AdjustWindows
 language:python
 return:
 params:(Boolean:isMinor)
 description:
-
+Updates the TCP and optionally the MCP. Helpful, when setting a new trackheight using I_HEIGHTOVERRIDE in SetMediaTrackInfo_Value.
+PARAMETERS:
+isMinor:false, updates only TCP; true, updates TCP and MCP
 ------
 name:TrackList_UpdateAllExternalSurfaces
 language:cpp
@@ -29643,62 +30003,114 @@ Returns the unsigned byte at address[offset]. Offset is added as steps of 1 byte
 name:JS_Composite
 language:cpp
 return:(int:)
-params:(void*:windowHWND), (int:srcx), (int:srcy), (int:srcw), (int:srch), (void*:sysBitmap), (int:dstx), (int:dsty), (int:dstw), (int:dsth)
+params:(void*:windowHWND), (int:srcx), (int:srcy), (int:srcw), (int:srch), (void*:sysBitmap), (int:dstx), (int:dsty), (int:dstw), (int:dsth), (bool*:autoUpdateOptional)
 description:
-Composites a LICE bitmap with a REAPER window.
-Each time that the window is re-drawn, the bitmap will be blitted over the window's client area (with per-pixel alpha blending).
-If dstw or dsth is -1, the bitmap will be stretched to fill the width or height of the window, respectively.
-Notes:
-\* Re-drawing can also be induced by JS\_Window\_InvalidateRect.
+Composites a LICE bitmap with a REAPER window. Each time that the window is re-drawn, the bitmap will be blitted over the window's client area (with per-pixel alpha blending).
+\* If dstw or dsth is -1, the bitmap will be stretched to fill the width or height of the window, respectively.
+\* autoUpdate is an optional parameter that is false by default. If true, JS\_Composite will automatically invalidate and re-draw the part of the window that covers the current position of the bitmap, and if the bitmap is being moved, also the previous position. (If only one or a handful of bitmaps are being moved across the screen, autoUpdate should result in smoother animation on WindowsOS; if numerous bitmaps are spread over the entire window, it may be faster to disable autoUpdate and instead call JS\_Window\_InvalidateRect explicitly once all bitmaps have been moved.)
+\* InvalidateRect should also be called whenever the contents of the bitmap contents have been changed, but not the position, to trigger a window update.
+\* On WindowsOS, the key to reducing flickering is to slow down the frequency at which the window is re-drawn. InvalidateRect should only be called when absolutely necessary, preferably not more than 10 times per second. (Also refer to the JS\_Composite\_Delay function.)
+\* On WindowsOS, flickering can further be reduced by keeping the invalidated area as small as possible, covering only the bitmaps that have been edited or moved. However, if numerous bitmaps are spread over the entire window, it may be faster to simply invalidate the entire client area.
 \* This function should not be applied directly to top-level windows, but rather to child windows.
 \* Some classes of UI elements, particularly buttons, do not take kindly to being composited, and may crash REAPER.
+\* On WindowsOS, GDI blitting does not perform alpha multiplication of the source bitmap. For proper color rendering, a separate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
 Returns:
-1 if successful, otherwise -1 = windowHWND is not window, -3 = Could not obtain the original window process, -4 = sysBitmap is not a LICE bitmap, -5 = sysBitmap is not a system bitmap, -6 = Could not obtain the window HDC.
+1 if successful, otherwise -1 = windowHWND is not a window, -3 = Could not obtain the original window process, -4 = sysBitmap is not a LICE bitmap, -5 = sysBitmap is not a system bitmap, -6 = Could not obtain the window HDC.
 ------
 name:extension_api
 language:eel
 return:(int:)
-params:("JS_Composite":), (void*:windowHWND), (int:srcx), (int:srcy), (int:srcw), (int:srch), (void*:sysBitmap), (int:dstx), (int:dsty), (int:dstw), (int:dsth)
+params:("JS_Composite":), (void*:windowHWND), (int:srcx), (int:srcy), (int:srcw), (int:srch), (void*:sysBitmap), (int:dstx), (int:dsty), (int:dstw), (int:dsth), (unsupported:autoUpdateOptional)
 description:
-Composites a LICE bitmap with a REAPER window.
-Each time that the window is re-drawn, the bitmap will be blitted over the window's client area (with per-pixel alpha blending).
-If dstw or dsth is -1, the bitmap will be stretched to fill the width or height of the window, respectively.
-Notes:
-\* Re-drawing can also be induced by JS\_Window\_InvalidateRect.
+Composites a LICE bitmap with a REAPER window. Each time that the window is re-drawn, the bitmap will be blitted over the window's client area (with per-pixel alpha blending).
+\* If dstw or dsth is -1, the bitmap will be stretched to fill the width or height of the window, respectively.
+\* autoUpdate is an optional parameter that is false by default. If true, JS\_Composite will automatically invalidate and re-draw the part of the window that covers the current position of the bitmap, and if the bitmap is being moved, also the previous position. (If only one or a handful of bitmaps are being moved across the screen, autoUpdate should result in smoother animation on WindowsOS; if numerous bitmaps are spread over the entire window, it may be faster to disable autoUpdate and instead call JS\_Window\_InvalidateRect explicitly once all bitmaps have been moved.)
+\* InvalidateRect should also be called whenever the contents of the bitmap contents have been changed, but not the position, to trigger a window update.
+\* On WindowsOS, the key to reducing flickering is to slow down the frequency at which the window is re-drawn. InvalidateRect should only be called when absolutely necessary, preferably not more than 10 times per second. (Also refer to the JS\_Composite\_Delay function.)
+\* On WindowsOS, flickering can further be reduced by keeping the invalidated area as small as possible, covering only the bitmaps that have been edited or moved. However, if numerous bitmaps are spread over the entire window, it may be faster to simply invalidate the entire client area.
 \* This function should not be applied directly to top-level windows, but rather to child windows.
 \* Some classes of UI elements, particularly buttons, do not take kindly to being composited, and may crash REAPER.
+\* On WindowsOS, GDI blitting does not perform alpha multiplication of the source bitmap. For proper color rendering, a separate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
 Returns:
-1 if successful, otherwise -1 = windowHWND is not window, -3 = Could not obtain the original window process, -4 = sysBitmap is not a LICE bitmap, -5 = sysBitmap is not a system bitmap, -6 = Could not obtain the window HDC.
+1 if successful, otherwise -1 = windowHWND is not a window, -3 = Could not obtain the original window process, -4 = sysBitmap is not a LICE bitmap, -5 = sysBitmap is not a system bitmap, -6 = Could not obtain the window HDC.
 ------
 name:reaper.JS_Composite
 language:lua
-return:(integer:retval)
-params:(identifier:windowHWND), (integer:srcx), (integer:srcy), (integer:srcw), (integer:srch), (identifier:sysBitmap), (integer:dstx), (integer:dsty), (integer:dstw), (integer:dsth)
+return:(integer:)
+params:(identifier:windowHWND), (integer:srcx), (integer:srcy), (integer:srcw), (integer:srch), (identifier:sysBitmap), (integer:dstx), (integer:dsty), (integer:dstw), (integer:dsth), (unsupported:autoUpdate)
 description:
-Composites a LICE bitmap with a REAPER window.
-Each time that the window is re-drawn, the bitmap will be blitted over the window's client area (with per-pixel alpha blending).
-If dstw or dsth is -1, the bitmap will be stretched to fill the width or height of the window, respectively.
-Notes:
-\* Re-drawing can also be induced by JS\_Window\_InvalidateRect.
+Composites a LICE bitmap with a REAPER window. Each time that the window is re-drawn, the bitmap will be blitted over the window's client area (with per-pixel alpha blending).
+\* If dstw or dsth is -1, the bitmap will be stretched to fill the width or height of the window, respectively.
+\* autoUpdate is an optional parameter that is false by default. If true, JS\_Composite will automatically invalidate and re-draw the part of the window that covers the current position of the bitmap, and if the bitmap is being moved, also the previous position. (If only one or a handful of bitmaps are being moved across the screen, autoUpdate should result in smoother animation on WindowsOS; if numerous bitmaps are spread over the entire window, it may be faster to disable autoUpdate and instead call JS\_Window\_InvalidateRect explicitly once all bitmaps have been moved.)
+\* InvalidateRect should also be called whenever the contents of the bitmap contents have been changed, but not the position, to trigger a window update.
+\* On WindowsOS, the key to reducing flickering is to slow down the frequency at which the window is re-drawn. InvalidateRect should only be called when absolutely necessary, preferably not more than 10 times per second. (Also refer to the JS\_Composite\_Delay function.)
+\* On WindowsOS, flickering can further be reduced by keeping the invalidated area as small as possible, covering only the bitmaps that have been edited or moved. However, if numerous bitmaps are spread over the entire window, it may be faster to simply invalidate the entire client area.
 \* This function should not be applied directly to top-level windows, but rather to child windows.
 \* Some classes of UI elements, particularly buttons, do not take kindly to being composited, and may crash REAPER.
+\* On WindowsOS, GDI blitting does not perform alpha multiplication of the source bitmap. For proper color rendering, a separate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
 Returns:
-1 if successful, otherwise -1 = windowHWND is not window, -3 = Could not obtain the original window process, -4 = sysBitmap is not a LICE bitmap, -5 = sysBitmap is not a system bitmap, -6 = Could not obtain the window HDC.
+1 if successful, otherwise -1 = windowHWND is not a window, -3 = Could not obtain the original window process, -4 = sysBitmap is not a LICE bitmap, -5 = sysBitmap is not a system bitmap, -6 = Could not obtain the window HDC.
 ------
 name:JS_Composite
 language:python
-return:(Int:)
-params:(void:windowHWND), (Int:srcx), (Int:srcy), (Int:srcw), (Int:srch), (void:sysBitmap), (Int:dstx), (Int:dsty), (Int:dstw), (Int:dsth)
+return:(Int:retval),(void:windowHWND),(Int:srcx),(Int:srcy),(Int:srcw),(Int:srch),(void:sysBitmap),(Int:dstx),(Int:dsty),(Int:dstw),(Int:dsth),(Boolean:autoUpdateOptional)
+params:(windowHWND:), (srcx:), (srcy:), (srcw:), (srch:), (sysBitmap:), (dstx:), (dsty:), (dstw:), (dsth:), (autoUpdateOptional:)
 description:
-Composites a LICE bitmap with a REAPER window.
-Each time that the window is re-drawn, the bitmap will be blitted over the window's client area (with per-pixel alpha blending).
-If dstw or dsth is -1, the bitmap will be stretched to fill the width or height of the window, respectively.
-Notes:
-\* Re-drawing can also be induced by JS\_Window\_InvalidateRect.
+Composites a LICE bitmap with a REAPER window. Each time that the window is re-drawn, the bitmap will be blitted over the window's client area (with per-pixel alpha blending).
+\* If dstw or dsth is -1, the bitmap will be stretched to fill the width or height of the window, respectively.
+\* autoUpdate is an optional parameter that is false by default. If true, JS\_Composite will automatically invalidate and re-draw the part of the window that covers the current position of the bitmap, and if the bitmap is being moved, also the previous position. (If only one or a handful of bitmaps are being moved across the screen, autoUpdate should result in smoother animation on WindowsOS; if numerous bitmaps are spread over the entire window, it may be faster to disable autoUpdate and instead call JS\_Window\_InvalidateRect explicitly once all bitmaps have been moved.)
+\* InvalidateRect should also be called whenever the contents of the bitmap contents have been changed, but not the position, to trigger a window update.
+\* On WindowsOS, the key to reducing flickering is to slow down the frequency at which the window is re-drawn. InvalidateRect should only be called when absolutely necessary, preferably not more than 10 times per second. (Also refer to the JS\_Composite\_Delay function.)
+\* On WindowsOS, flickering can further be reduced by keeping the invalidated area as small as possible, covering only the bitmaps that have been edited or moved. However, if numerous bitmaps are spread over the entire window, it may be faster to simply invalidate the entire client area.
 \* This function should not be applied directly to top-level windows, but rather to child windows.
 \* Some classes of UI elements, particularly buttons, do not take kindly to being composited, and may crash REAPER.
+\* On WindowsOS, GDI blitting does not perform alpha multiplication of the source bitmap. For proper color rendering, a separate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
 Returns:
-1 if successful, otherwise -1 = windowHWND is not window, -3 = Could not obtain the original window process, -4 = sysBitmap is not a LICE bitmap, -5 = sysBitmap is not a system bitmap, -6 = Could not obtain the window HDC.
+1 if successful, otherwise -1 = windowHWND is not a window, -3 = Could not obtain the original window process, -4 = sysBitmap is not a LICE bitmap, -5 = sysBitmap is not a system bitmap, -6 = Could not obtain the window HDC.
+------
+name:JS_Composite_Delay
+language:cpp
+return:(int:)
+params:(void*:windowHWND), (double:minTime), (double:maxTime), (int:numBitmapsWhenMax), (double*:prevMinTimeOut), (double*:prevMaxTimeOut), (int*:prevBitmapsOut)
+description:
+On WindowsOS, flickering of composited images can be improved considerably by slowing the refresh rate of the window. The optimal refresh rate may depend on the number of composited bitmaps.
+minTime is the minimum refresh delay, in seconds, when only one bitmap is composited onto the window. The delay time will increase linearly with the number of bitmaps, up to a maximum of maxTime when numBitmapsWhenMax is reached.
+Returns:
+\* retval = 1 if successful, 0 if arguments are invalid (i.e. if maxTime < minTime, or maxBitmaps < 1).
+\* If delay times have not previously been set for this window, prev values are -1.
+------
+name:extension_api
+language:eel
+return:(int:)
+params:("JS_Composite_Delay":), (void*:windowHWND), (minTime:), (maxTime:), (int:numBitmapsWhenMax), (&prevMinTime:), (&prevMaxTime:), (int:&prevBitmaps)
+description:
+On WindowsOS, flickering of composited images can be improved considerably by slowing the refresh rate of the window. The optimal refresh rate may depend on the number of composited bitmaps.
+minTime is the minimum refresh delay, in seconds, when only one bitmap is composited onto the window. The delay time will increase linearly with the number of bitmaps, up to a maximum of maxTime when numBitmapsWhenMax is reached.
+Returns:
+\* retval = 1 if successful, 0 if arguments are invalid (i.e. if maxTime < minTime, or maxBitmaps < 1).
+\* If delay times have not previously been set for this window, prev values are -1.
+------
+name:reaper.JS_Composite_Delay
+language:lua
+return:(integer:retval),(number:prevMinTime),(number:prevMaxTime),(number:prevBitmaps)
+params:(identifier:windowHWND), (number:minTime), (number:maxTime), (integer:numBitmapsWhenMax)
+description:
+On WindowsOS, flickering of composited images can be improved considerably by slowing the refresh rate of the window. The optimal refresh rate may depend on the number of composited bitmaps.
+minTime is the minimum refresh delay, in seconds, when only one bitmap is composited onto the window. The delay time will increase linearly with the number of bitmaps, up to a maximum of maxTime when numBitmapsWhenMax is reached.
+Returns:
+\* retval = 1 if successful, 0 if arguments are invalid (i.e. if maxTime < minTime, or maxBitmaps < 1).
+\* If delay times have not previously been set for this window, prev values are -1.
+------
+name:JS_Composite_Delay
+language:python
+return:(Int:retval),(void:windowHWND),(Float:minTime),(Float:maxTime),(Int:numBitmapsWhenMax),(Float:prevMinTimeOut),(Float:prevMaxTimeOut),(Int:prevBitmapsOut)
+params:(windowHWND:), (minTime:), (maxTime:), (numBitmapsWhenMax:), (prevMinTimeOut:), (prevMaxTimeOut:), (prevBitmapsOut:)
+description:
+On WindowsOS, flickering of composited images can be improved considerably by slowing the refresh rate of the window. The optimal refresh rate may depend on the number of composited bitmaps.
+minTime is the minimum refresh delay, in seconds, when only one bitmap is composited onto the window. The delay time will increase linearly with the number of bitmaps, up to a maximum of maxTime when numBitmapsWhenMax is reached.
+Returns:
+\* retval = 1 if successful, 0 if arguments are invalid (i.e. if maxTime < minTime, or maxBitmaps < 1).
+\* If delay times have not previously been set for this window, prev values are -1.
 ------
 name:JS_Composite_ListBitmaps
 language:cpp
@@ -29739,30 +30151,38 @@ retval is the number of linked bitmaps found, or negative if an error occured.
 name:JS_Composite_Unlink
 language:cpp
 return:(void:)
-params:(void*:windowHWND), (void*:bitmap)
+params:(void*:windowHWND), (void*:bitmapOptional), (bool*:autoUpdateOptional)
 description:
-
+Unlinks the window and bitmap.
+\* autoUpdate is an optional parameter. If unlinking a single bitmap and autoUpdate is true, the function will automatically re-draw the window to remove the blitted image.
+If no bitmap is specified, all bitmaps composited to the window will be unlinked -- even those by other scripts.
 ------
 name:extension_api
 language:eel
 return:
-params:("JS_Composite_Unlink":), (void*:windowHWND), (void*:bitmap)
+params:("JS_Composite_Unlink":), (void*:windowHWND), (void*:bitmap), (unsupported:autoUpdateOptional)
 description:
-
+Unlinks the window and bitmap.
+\* autoUpdate is an optional parameter. If unlinking a single bitmap and autoUpdate is true, the function will automatically re-draw the window to remove the blitted image.
+If no bitmap is specified, all bitmaps composited to the window will be unlinked -- even those by other scripts.
 ------
 name:reaper.JS_Composite_Unlink
 language:lua
 return:
-params:(identifier:windowHWND), (identifier:bitmap)
+params:(identifier:windowHWND), (identifier:bitmap), (unsupported:autoUpdate)
 description:
-
+Unlinks the window and bitmap.
+\* autoUpdate is an optional parameter. If unlinking a single bitmap and autoUpdate is true, the function will automatically re-draw the window to remove the blitted image.
+If no bitmap is specified, all bitmaps composited to the window will be unlinked -- even those by other scripts.
 ------
 name:JS_Composite_Unlink
 language:python
-return:
-params:(void:windowHWND), (void:bitmap)
+return:(void:windowHWND),(void:bitmapOptional),(Boolean:autoUpdateOptional)
+params:(windowHWND:), (bitmapOptional:), (autoUpdateOptional:)
 description:
-
+Unlinks the window and bitmap.
+\* autoUpdate is an optional parameter. If unlinking a single bitmap and autoUpdate is true, the function will automatically re-draw the window to remove the blitted image.
+If no bitmap is specified, all bitmaps composited to the window will be unlinked -- even those by other scripts.
 ------
 name:JS_Double
 language:cpp
@@ -29799,7 +30219,7 @@ params:(void*:destHDC), (int:dstx), (int:dsty), (void*:sourceHDC), (int:srcx), (
 description:
 Blits between two device contexts, which may include LICE "system bitmaps".
 mode: Optional parameter. "SRCCOPY" by default, or specify "ALPHA" to enable per-pixel alpha blending.
-WARNING: On WindowsOS, GDI\_Blit does not perform alpha multiplication of the source bitmap. For proper color rendering, a seperate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
+WARNING: On WindowsOS, GDI\_Blit does not perform alpha multiplication of the source bitmap. For proper color rendering, a separate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
 ------
 name:extension_api
 language:eel
@@ -29808,7 +30228,7 @@ params:("JS_GDI_Blit":), (void*:destHDC), (int:dstx), (int:dsty), (void*:sourceH
 description:
 Blits between two device contexts, which may include LICE "system bitmaps".
 mode: Optional parameter. "SRCCOPY" by default, or specify "ALPHA" to enable per-pixel alpha blending.
-WARNING: On WindowsOS, GDI\_Blit does not perform alpha multiplication of the source bitmap. For proper color rendering, a seperate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
+WARNING: On WindowsOS, GDI\_Blit does not perform alpha multiplication of the source bitmap. For proper color rendering, a separate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
 ------
 name:reaper.JS_GDI_Blit
 language:lua
@@ -29817,7 +30237,7 @@ params:(identifier:destHDC), (integer:dstx), (integer:dsty), (identifier:sourceH
 description:
 Blits between two device contexts, which may include LICE "system bitmaps".
 mode: Optional parameter. "SRCCOPY" by default, or specify "ALPHA" to enable per-pixel alpha blending.
-WARNING: On WindowsOS, GDI\_Blit does not perform alpha multiplication of the source bitmap. For proper color rendering, a seperate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
+WARNING: On WindowsOS, GDI\_Blit does not perform alpha multiplication of the source bitmap. For proper color rendering, a separate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
 ------
 name:JS_GDI_Blit
 language:python
@@ -29826,7 +30246,7 @@ params:(void:destHDC), (Int:dstx), (Int:dsty), (void:sourceHDC), (Int:srcx), (In
 description:
 Blits between two device contexts, which may include LICE "system bitmaps".
 mode: Optional parameter. "SRCCOPY" by default, or specify "ALPHA" to enable per-pixel alpha blending.
-WARNING: On WindowsOS, GDI\_Blit does not perform alpha multiplication of the source bitmap. For proper color rendering, a seperate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
+WARNING: On WindowsOS, GDI\_Blit does not perform alpha multiplication of the source bitmap. For proper color rendering, a separate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
 ------
 name:JS_GDI_CreateFillBrush
 language:cpp
@@ -30305,28 +30725,36 @@ language:cpp
 return:(void:)
 params:(void*:windowHWND), (void*:deviceHDC)
 description:
-Any GDI HDC should be released immediately after drawing, and deferred scripts should get and release new DCs in each cycle.
+To release a window HDC, both arguments must be supplied: the HWND as well as the HDC. To release a screen DC, only the HDC needs to be supplied.
+For compatibility with previous versions, the HWND and HDC can be supplied in any order.
+NOTE: Any GDI HDC should be released immediately after drawing, and deferred scripts should get and release new DCs in each cycle.
 ------
 name:extension_api
 language:eel
 return:
 params:("JS_GDI_ReleaseDC":), (void*:windowHWND), (void*:deviceHDC)
 description:
-Any GDI HDC should be released immediately after drawing, and deferred scripts should get and release new DCs in each cycle.
+To release a window HDC, both arguments must be supplied: the HWND as well as the HDC. To release a screen DC, only the HDC needs to be supplied.
+For compatibility with previous versions, the HWND and HDC can be supplied in any order.
+NOTE: Any GDI HDC should be released immediately after drawing, and deferred scripts should get and release new DCs in each cycle.
 ------
 name:reaper.JS_GDI_ReleaseDC
 language:lua
 return:
 params:(identifier:windowHWND), (identifier:deviceHDC)
 description:
-Any GDI HDC should be released immediately after drawing, and deferred scripts should get and release new DCs in each cycle.
+To release a window HDC, both arguments must be supplied: the HWND as well as the HDC. To release a screen DC, only the HDC needs to be supplied.
+For compatibility with previous versions, the HWND and HDC can be supplied in any order.
+NOTE: Any GDI HDC should be released immediately after drawing, and deferred scripts should get and release new DCs in each cycle.
 ------
 name:JS_GDI_ReleaseDC
 language:python
 return:
 params:(void:windowHWND), (void:deviceHDC)
 description:
-Any GDI HDC should be released immediately after drawing, and deferred scripts should get and release new DCs in each cycle.
+To release a window HDC, both arguments must be supplied: the HWND as well as the HDC. To release a screen DC, only the HDC needs to be supplied.
+For compatibility with previous versions, the HWND and HDC can be supplied in any order.
+NOTE: Any GDI HDC should be released immediately after drawing, and deferred scripts should get and release new DCs in each cycle.
 ------
 name:JS_GDI_SelectObject
 language:cpp
@@ -30475,6 +30903,7 @@ params:(void*:destHDC), (int:dstx), (int:dsty), (int:dstw), (int:dsth), (void*:s
 description:
 Blits between two device contexts, which may include LICE "system bitmaps".
 modeOptional: "SRCCOPY" by default, or specify "ALPHA" to enable per-pixel alpha blending.
+WARNING: On WindowsOS, GDI\_Blit does not perform alpha multiplication of the source bitmap. For proper color rendering, a separate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
 ------
 name:extension_api
 language:eel
@@ -30483,6 +30912,7 @@ params:("JS_GDI_StretchBlit":), (void*:destHDC), (int:dstx), (int:dsty), (int:ds
 description:
 Blits between two device contexts, which may include LICE "system bitmaps".
 modeOptional: "SRCCOPY" by default, or specify "ALPHA" to enable per-pixel alpha blending.
+WARNING: On WindowsOS, GDI\_Blit does not perform alpha multiplication of the source bitmap. For proper color rendering, a separate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
 ------
 name:reaper.JS_GDI_StretchBlit
 language:lua
@@ -30491,6 +30921,7 @@ params:(identifier:destHDC), (integer:dstx), (integer:dsty), (integer:dstw), (in
 description:
 Blits between two device contexts, which may include LICE "system bitmaps".
 modeOptional: "SRCCOPY" by default, or specify "ALPHA" to enable per-pixel alpha blending.
+WARNING: On WindowsOS, GDI\_Blit does not perform alpha multiplication of the source bitmap. For proper color rendering, a separate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
 ------
 name:JS_GDI_StretchBlit
 language:python
@@ -30499,6 +30930,7 @@ params:(void:destHDC), (Int:dstx), (Int:dsty), (Int:dstw), (Int:dsth), (void:sou
 description:
 Blits between two device contexts, which may include LICE "system bitmaps".
 modeOptional: "SRCCOPY" by default, or specify "ALPHA" to enable per-pixel alpha blending.
+WARNING: On WindowsOS, GDI\_Blit does not perform alpha multiplication of the source bitmap. For proper color rendering, a separate pre-multiplication step is therefore required, using either LICE\_Blit or LICE\_ProcessRect.
 ------
 name:JS_Int
 language:cpp
@@ -30813,28 +31245,28 @@ language:cpp
 return:(void:)
 params:(void*:bitmap)
 description:
-
+Deletes the bitmap, and also unlinks bitmap from any composited window.
 ------
 name:extension_api
 language:eel
 return:
 params:("JS_LICE_DestroyBitmap":), (void*:bitmap)
 description:
-
+Deletes the bitmap, and also unlinks bitmap from any composited window.
 ------
 name:reaper.JS_LICE_DestroyBitmap
 language:lua
 return:
 params:(identifier:bitmap)
 description:
-
+Deletes the bitmap, and also unlinks bitmap from any composited window.
 ------
 name:JS_LICE_DestroyBitmap
 language:python
 return:
 params:(void:bitmap)
 description:
-
+Deletes the bitmap, and also unlinks bitmap from any composited window.
 ------
 name:JS_LICE_DestroyFont
 language:cpp
@@ -31251,6 +31683,34 @@ params:(void:bitmap), (Float:x1), (Float:y1), (Float:x2), (Float:y2), (Int:color
 description:
 LICE modes: "COPY" (default if empty string), "MASK", "ADD", "DODGE", "MUL", "OVERLAY" or "HSVADJ", any of which may be combined with "ALPHA".
 LICE color format: 0xAARRGGBB (AA is only used in ALPHA mode).
+------
+name:JS_LICE_ListAllBitmaps
+language:cpp
+return:(int:)
+params:(char*:listOutNeedBig), (int:listOutNeedBig_sz)
+description:
+
+------
+name:extension_api
+language:eel
+return:(int:)
+params:("JS_LICE_ListAllBitmaps":), (#list:)
+description:
+
+------
+name:reaper.JS_LICE_ListAllBitmaps
+language:lua
+return:(integer:retval),(string:list)
+params:
+description:
+
+------
+name:JS_LICE_ListAllBitmaps
+language:python
+return:(Int:retval),(String:listOutNeedBig),(Int:listOutNeedBig_sz)
+params:(listOutNeedBig:), (listOutNeedBig_sz:)
+description:
+
 ------
 name:JS_LICE_LoadPNG
 language:cpp
@@ -33288,6 +33748,58 @@ params:(void:windowHWND), (Boolean:enable)
 description:
 Enables or disables mouse and keyboard input to the specified window or control.
 ------
+name:JS_Window_EnableMetal
+language:cpp
+return:(int:retval)
+params:(void*:windowHWND)
+description:
+On macOS, returns the Metal graphics setting:
+2 = Metal enabled and support GetDC()/ReleaseDC() for drawing (more overhead).
+1 = Metal enabled.
+0 = N/A (Windows and Linux).
+-1 = non-metal async layered mode.
+-2 = non-metal non-async layered mode.
+WARNING: If using mode -1, any BitBlt()/StretchBlt() MUST have the source bitmap persist. If it is resized after Blit it could cause crashes.
+------
+name:extension_api
+language:eel
+return:(int:retval)
+params:("JS_Window_EnableMetal":), (void*:windowHWND)
+description:
+On macOS, returns the Metal graphics setting:
+2 = Metal enabled and support GetDC()/ReleaseDC() for drawing (more overhead).
+1 = Metal enabled.
+0 = N/A (Windows and Linux).
+-1 = non-metal async layered mode.
+-2 = non-metal non-async layered mode.
+WARNING: If using mode -1, any BitBlt()/StretchBlt() MUST have the source bitmap persist. If it is resized after Blit it could cause crashes.
+------
+name:reaper.JS_Window_EnableMetal
+language:lua
+return:(integer:retval)
+params:(identifier:windowHWND)
+description:
+On macOS, returns the Metal graphics setting:
+2 = Metal enabled and support GetDC()/ReleaseDC() for drawing (more overhead).
+1 = Metal enabled.
+0 = N/A (Windows and Linux).
+-1 = non-metal async layered mode.
+-2 = non-metal non-async layered mode.
+WARNING: If using mode -1, any BitBlt()/StretchBlt() MUST have the source bitmap persist. If it is resized after Blit it could cause crashes.
+------
+name:JS_Window_EnableMetal
+language:python
+return:(Int:retval)
+params:(void:windowHWND)
+description:
+On macOS, returns the Metal graphics setting:
+2 = Metal enabled and support GetDC()/ReleaseDC() for drawing (more overhead).
+1 = Metal enabled.
+0 = N/A (Windows and Linux).
+-1 = non-metal async layered mode.
+-2 = non-metal non-async layered mode.
+WARNING: If using mode -1, any BitBlt()/StretchBlt() MUST have the source bitmap persist. If it is resized after Blit it could cause crashes.
+------
 name:JS_Window_Find
 language:cpp
 return:(void*:)
@@ -33761,28 +34273,28 @@ language:cpp
 return:(void*:)
 params:
 description:
-Retrieves a HWND to the foreground window (the window with which the user is currently working).
+Retrieves a HWND to the top-level foreground window (the window with which the user is currently working).
 ------
 name:extension_api
 language:eel
 return:(void*:)
 params:("JS_Window_GetForeground":)
 description:
-Retrieves a HWND to the foreground window (the window with which the user is currently working).
+Retrieves a HWND to the top-level foreground window (the window with which the user is currently working).
 ------
 name:reaper.JS_Window_GetForeground
 language:lua
 return:(identifier:)
 params:
 description:
-Retrieves a HWND to the foreground window (the window with which the user is currently working).
+Retrieves a HWND to the top-level foreground window (the window with which the user is currently working).
 ------
 name:JS_Window_GetForeground
 language:python
 return:(void:)
 params:
 description:
-Retrieves a HWND to the foreground window (the window with which the user is currently working).
+Retrieves a HWND to the top-level foreground window (the window with which the user is currently working).
 ------
 name:JS_Window_GetLongPtr
 language:cpp
@@ -34161,44 +34673,36 @@ language:cpp
 return:(bool:)
 params:(void*:windowHWND)
 description:
-DEPRECATED: Since REAPER v5.974, windows can be checked using the native function ValidatePtr.
 Determines whether the specified window handle identifies an existing window.
 On macOS and Linux, only windows that were created by WDL/swell will be identified (and only such windows should be acted on by scripts).
-WARNING! On MacOS and Linux, REAPER WILL CRASH if the handle passed to a JS\_Window](#JS_Window) or [JS\_WindowMessage function does not refer to an existing window.
-The IsWindow function is slower on macOS and Linux. Preferably use native functions such as MIDIEditor\_GetMode to test handles.
+NOTE: Since REAPER v5.974, windows can be checked using the native function ValidatePtr(windowHWND, "HWND").
 ------
 name:extension_api
 language:eel
 return:(bool:)
 params:("JS_Window_IsWindow":), (void*:windowHWND)
 description:
-DEPRECATED: Since REAPER v5.974, windows can be checked using the native function ValidatePtr.
 Determines whether the specified window handle identifies an existing window.
 On macOS and Linux, only windows that were created by WDL/swell will be identified (and only such windows should be acted on by scripts).
-WARNING! On MacOS and Linux, REAPER WILL CRASH if the handle passed to a JS\_Window](#JS_Window) or [JS\_WindowMessage function does not refer to an existing window.
-The IsWindow function is slower on macOS and Linux. Preferably use native functions such as MIDIEditor\_GetMode to test handles.
+NOTE: Since REAPER v5.974, windows can be checked using the native function ValidatePtr(windowHWND, "HWND").
 ------
 name:reaper.JS_Window_IsWindow
 language:lua
 return:(boolean:)
 params:(identifier:windowHWND)
 description:
-DEPRECATED: Since REAPER v5.974, windows can be checked using the native function ValidatePtr.
 Determines whether the specified window handle identifies an existing window.
 On macOS and Linux, only windows that were created by WDL/swell will be identified (and only such windows should be acted on by scripts).
-WARNING! On MacOS and Linux, REAPER WILL CRASH if the handle passed to a JS\_Window](#JS_Window) or [JS\_WindowMessage function does not refer to an existing window.
-The IsWindow function is slower on macOS and Linux. Preferably use native functions such as MIDIEditor\_GetMode to test handles.
+NOTE: Since REAPER v5.974, windows can be checked using the native function ValidatePtr(windowHWND, "HWND").
 ------
 name:JS_Window_IsWindow
 language:python
 return:(Boolean:)
 params:(void:windowHWND)
 description:
-DEPRECATED: Since REAPER v5.974, windows can be checked using the native function ValidatePtr.
 Determines whether the specified window handle identifies an existing window.
 On macOS and Linux, only windows that were created by WDL/swell will be identified (and only such windows should be acted on by scripts).
-WARNING! On MacOS and Linux, REAPER WILL CRASH if the handle passed to a JS\_Window](#JS_Window) or [JS\_WindowMessage function does not refer to an existing window.
-The IsWindow function is slower on macOS and Linux. Preferably use native functions such as MIDIEditor\_GetMode to test handles.
+NOTE: Since REAPER v5.974, windows can be checked using the native function ValidatePtr(windowHWND, "HWND").
 ------
 name:JS_Window_ListAllChild
 language:cpp
@@ -37953,6 +38457,7 @@ params:(char:)
 description:
 If char is 0 or omitted, returns a character from the keyboard queue, or 0 if no character is available, or -1 if the graphics window is not open. If char is specified and nonzero, that character's status will be checked, and the function will return greater than 0 if it is pressed.
 Common values are standard ASCII, such as 'a', 'A', '=' and '1', but for many keys multi-byte values are used, including 'home', 'up', 'down', 'left', 'rght', 'f1'.. 'f12', 'pgup', 'pgdn', 'ins', and 'del'.
+Shortcuts with scope "Global + textfields" will still run the associated action, scope of "Normal" or "Global" will not.
 Modified and special keys can also be returned, including:
 \* Ctrl/Cmd+A..Ctrl+Z as 1..26
 \* Ctrl/Cmd+Alt+A..Z as 257..282
@@ -37996,6 +38501,7 @@ params:(name:), (width:), (height:), (dockstate:), (xpos:), (ypos:)
 description:
 Initializes the graphics window with title name. Suggested width and height can be specified.
 Once the graphics window is open, gfx_update() should be called periodically.
+To resizes/reposition the window, call gfx.init again and pass an empty string as name-parameter.
 ------
 name:gfx_line
 language:eel
@@ -38901,6 +39407,7 @@ If char is 0 or omitted, returns a character from the keyboard queue, or 0 if no
 If char is specified and nonzero, that character's status will be checked, and the function will return greater than 0 if it is pressed.
 Common values are standard ASCII, such as 'a', 'A', '=' and '1', but for many keys multi-byte values are used,
 including 'home', 'up', 'down', 'left', 'right', 'f1'.. 'f12', 'pgup', 'pgdn', 'ins', and 'del'.
+Shortcuts with scope "Global + textfields" will still run the associated action, scope of "Normal" or "Global" will not.
 Modified and special keys can also be returned, including:
 - Ctrl/Cmd+A..Ctrl+Z as 1..26
 - Ctrl/Cmd+Alt+A..Z as 257..282
@@ -38984,6 +39491,7 @@ params:(string:"name"), (optional integer:width), (optional integer:height), (op
 description:
 Initializes the graphics window with title name. Suggested width and height can be specified.Once the graphics window is open, gfx.update() should be called periodically.
 Only one graphics-window can be opened per script! Calling gfx.ini after a window has been opened has no effect.
+To resizes/reposition the window, call gfx.init again and pass an empty string as name-parameter.
 PARAMETERS:
 width:the width of the window; minmum is 50
 height:the height of the window; minimum is 16
@@ -41575,7 +42083,7 @@ D_PITCH:double * : take pitch adjustment in semitones, -12=one octave down, 0=no
 B_PPITCH:bool * : preserve pitch when changing playback rate / languages:c,eel2,lua,python,eel,cpp
 I_CHANMODE:int * : channel mode, 0=normal, 1=reverse stereo, 2=downmix, 3=left, 4=right / languages:c,eel2,lua,python,eel,cpp
 I_PITCHMODE:int * : pitch shifter mode, -1=projext default, otherwise high 2 bytes=shifter, low 2 bytes=parameter / languages:c,eel2,lua,python,eel,cpp
-I_CUSTOMCOLOR:int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color anyway) / languages:c,eel2,lua,python,eel,cpp
+I_CUSTOMCOLOR:int * : custom color, OS dependent color|0x100000 (i.e. ColorToNative(r,g,b)|0x100000). If you do not |0x100000, then it will not be used, but will store the color. / languages:c,eel2,lua,python,eel,cpp
 IP_TAKENUMBER:int : take number (read-only, returns the take number directly) / languages:c,eel2,lua,python,eel,cpp
 P_SOURCE:PCM_source *. Note that if setting this, you should first retrieve the old source, set the new, THEN delete the old. / languages:c,eel2,lua,python,eel
 B_MUTE:bool * : muted / send mute state (1.0 if muted, otherwise 0.0) / languages:c,eel2,lua,python,eel,cpp
@@ -41600,7 +42108,7 @@ I_FOLDERDEPTH:int * : folder depth change, 0=normal, 1=track is a folder parent,
 I_FOLDERCOMPACT:int * : folder compacted state (only valid on folders), 0=normal, 1=small, 2=tiny children / languages:c,eel2,lua,python,eel,cpp
 I_MIDIHWOUT:int * : track midi hardware output index, <0=disabled, low 5 bits are which channels (0=all, 1-16), next 5 bits are output device index (0-31) / languages:c,eel2,lua,python,eel,cpp
 I_PERFFLAGS:int * : track performance flags, &1=no media buffering, &2=no anticipative FX / languages:c,eel2,lua,python,eel,cpp
-I_HEIGHTOVERRIDE:int * : custom height override for TCP window, 0 for none, otherwise size in pixels / languages:c,eel2,lua,python,eel,cpp
+I_HEIGHTOVERRIDE:int * : custom height override for TCP window, 0 for none, otherwise size in pixels / int * : custom height override for TCP window, 0 for none, otherwise size in pixels(use [TrackList_AdjustWindows](#TrackList_AdjustWindows) to update TCP after this. / int * : custom height override for TCP window, 0 for none, otherwise size in pixels(use TrackList_AdjustWindows to update TCP after this. / languages:c,eel2,lua,python,eel,cpp
 B_HEIGHTLOCK:bool * : track height lock (must set I_HEIGHTOVERRIDE before locking) / languages:c,eel2,lua,python,eel,cpp
 D_WIDTH:double * : width of track, -1..1 / languages:c,eel2,lua,python,eel,cpp
 D_DUALPANL:double * : dualpan position 1, -1..1, only if I_PANMODE==6 / languages:c,eel2,lua,python,eel,cpp
@@ -41632,11 +42140,11 @@ P_POOL_EXT:xyz:char *, extension-specific persistent data / languages:c,eel2,lua
 P_EXT:xyz:char * : extension-specific persistent data / languages:c,eel2,lua,python,eel,cpp
 P_NOTES:char * : item note text (do not write to returned pointer, use setNewValue to update) / languages:c,eel2,lua,python,eel
 GUID:GUID * : 16-byte GUID, can query or update. If using a _String() function, GUID is a string {xyz-...}. / languages:c,eel2,lua,python,eel,cpp
-P_NAME:char * to take name / char * : track name (on master returns NULL) / languages:c,eel2,lua,python,eel,cpp
+P_NAME:char * : take name / char * : track name (on master returns NULL) / languages:c,eel2,lua,python,eel,cpp
 P_ICON:const char * : track icon (full filename, or relative to resource_path/data/track_icons) / languages:c,eel2,lua,python,eel
 P_MCP_LAYOUT:const char * : layout name / languages:c,eel2,lua,python,eel
 P_TCP_LAYOUT:const char * : layout name / languages:c,eel2,lua,python,eel
-RENDER_SETTINGS:&(1|2)=0:master mix, &1=stems+master mix, &2=stems only, &4=multichannel tracks to multichannel files, &8=use render matrix, &16=tracks with only mono media to mono files, &32=selected media items, &64=selected media items via master / languages:c,eel2,lua,python,eel
+RENDER_SETTINGS:&(1|2)=0:master mix, &1=stems+master mix, &2=stems only, &4=multichannel tracks to multichannel files, &8=use render matrix, &16=tracks with only mono media to mono files, &32=selected media items, &64=selected media items via master, & 128=Selected tracks via master, &256=Stretch markers/transient guide-checkbox(Only with WAV/AIFF and Source=Selected media items/Selected media items via master), &1024=Take markers-checkbox(Only with WAV and Source=Selected media items/Selected media items via master)             OGG, OPUS and FLAC support embedding of tempoinformation via metadata, settable using [GetSetProjectInfo_String](#GetSetProjectInfo_String). / &(1|2)=0:master mix, &1=stems+master mix, &2=stems only, &4=multichannel tracks to multichannel files, &8=use render matrix, &16=tracks with only mono media to mono files, &32=selected media items, &64=selected media items via master, & 128=Selected tracks via master, &256=Stretch markers/transient guide-checkbox(Only with WAV/AIFF and Source=Selected media items/Selected media items via master), &1024=Take markers-checkbox(Only with WAV and Source=Selected media items/Selected media items via master)             OGG, OPUS and FLAC support embedding of tempoinformation via metadata, settable using GetSetProjectInfo_String. / languages:c,eel2,lua,python,eel
 RENDER_BOUNDSFLAG:0=custom time bounds, 1=entire project, 2=time selection, 3=all project regions, 4=selected media items, 5=selected project regions / languages:c,eel2,lua,python,eel
 RENDER_CHANNELS:number of channels in rendered file / languages:c,eel2,lua,python,eel
 RENDER_SRATE:sample rate of rendered file (or 0 for project sample rate) / languages:c,eel2,lua,python,eel
@@ -41644,7 +42152,7 @@ RENDER_STARTPOS:render start time when RENDER_BOUNDSFLAG=0 / languages:c,eel2,lu
 RENDER_ENDPOS:render end time when RENDER_BOUNDSFLAG=0 / languages:c,eel2,lua,python,eel
 RENDER_TAILFLAG:apply render tail setting when rendering: &1=custom time bounds, &2=entire project, &4=time selection, &8=all project regions, &16=selected media items, &32=selected project regions / languages:c,eel2,lua,python,eel
 RENDER_TAILMS:tail length in ms to render (only used if RENDER_BOUNDSFLAG and RENDER_TAILFLAG are set) / languages:c,eel2,lua,python,eel
-RENDER_ADDTOPROJ:1=add rendered files to project / languages:c,eel2,lua,python,eel
+RENDER_ADDTOPROJ:&1=add rendered files to project, &2=Do not render files that are likely silent / languages:c,eel2,lua,python,eel
 RENDER_DITHER:&1=dither, &2=noise shaping, &4=dither stems, &8=noise shaping on stems / languages:c,eel2,lua,python,eel
 PROJECT_SRATE:samplerate (ignored unless PROJECT_SRATE_USE set) / languages:c,eel2,lua,python,eel
 PROJECT_SRATE_USE:set to 1 if project samplerate is used / languages:c,eel2,lua,python,eel
@@ -41652,8 +42160,10 @@ MARKER_GUID:X:get the GUID (unique ID) of the marker or region with index X, whe
 RECORD_PATH:recording directory -- may be blank or a relative path, to get the effective path see [GetProjectPathEx](#GetProjectPathEx) / recording directory -- may be blank or a relative path, to get the effective path see GetProjectPathEx / languages:c,eel2,lua,python,eel
 RENDER_FILE:render directory / languages:c,eel2,lua,python,eel
 RENDER_PATTERN:render file name (may contain wildcards) / languages:c,eel2,lua,python,eel
-RENDER_FORMAT:base64-encoded sink configuration (see project files, etc). Callers can also pass a simple 4-byte string (non-base64-encoded), to use default settings for that sink type.             see [render-code-documentation](render-codes-decoded-base64-strings.txt) for how the unencoded RENDER_FORMAT-string is structured. / languages:c,eel2,lua,python,eel
-RENDER_FORMAT2:base64-encoded secondary sink configuration. Callers             can also pass a simple 4-byte string (non-base64-encoded), e.g. "evaw"             or "l3pm", to use default settings for that sink type, or "" to disable             secondary render. / languages:c,eel2,lua,python,eel
+RENDER_TARGETS:semicolon separated list of files that would be written if the project is rendered using the most recent render settings / languages:c,eel2,lua,python,eel
+RENDER_FORMAT:base64-encoded sink configuration (see project files, etc). Callers can also pass a simple 4-byte string (non-base64-encoded), to use default settings for that sink type. / languages:c,eel2,lua,python,eel
+RENDER_FORMAT2:base64-encoded secondary sink configuration. Callers can also pass a simple 4-byte string (non-base64-encoded), e.g. "evaw" or "l3pm", to use default settings for that sink type, or "" to disable secondary render.             see [render-code-documentation](render-codes-decoded-base64-strings.txt) for how the unencoded RENDER_FORMAT-string is structured. / languages:c,eel2,lua,python,eel
+RENDER_METADATA:get or set the metadata saved with the project (not metadata embedded in project media). Example, ID3 album name metadata: Uses common ID3-tagcodes like TALB(album), TPE1(Artist), etc.  			To get album tag, use "ID3:TALB", to set album tag, use "ID3:TALB|my album name". 			Supported tags-codes are: TIT2(Title), TPE1(Artist), TPE2(Albumartist), TALB(Album), TRCK(Track), TCON(Genre), TYER(Year), TDRC(Recording time: YYYY-MM-DD), TKEY(Key), TBPM(Tempo), TSRC(International Standard Recording Code), COMM(Comment), COMM_LANG(Comment language), APIC_TYPE(Image type), APIC_DESC(Image description), APIC_FILE(Image file) 			APIC_TYPE can have be of the following:             0: Other             1: 32x32 pixel file icon (PNG only)             2: Other file icon             3: Cover (front)             4: Cover (back)             5: Leaflet page             6: Media             7: Lead artist/Lead Performer/Solo             8: Artist/Performer             9: Conductor             10: Band/Orchestra             11: Composer             12: Lyricist/Text writer             13: Recording location             14: During recording             15: During performance             16: Movie/video screen capture             17: A bright colored fish             18: Illustration             19: Band/Artist logotype             20: Publisher/Studiotype / languages:c,eel2,lua,python,eel
 B_MONO:bool * / send mono state (1.0 if send is set to mono, otherwise 0.0) / languages:c,eel2,lua,python,eel,cpp
 I_SENDMODE:int *, 0=post-fader, 1=pre-fx, 2=post-fx (deprecated), 3=post-fx / send mode (0=post-fader, 1=pre-fx, 2=post-fx(deprecated), 3=post-fx) / languages:c,eel2,lua,python,eel,cpp
 I_SRCCHAN:int *, index,&1024=mono, -1 for none / audio source starting channel index or -1 if audio send is disabled (&1024=mono...note that in that case, when reading index, you should do (index XOR 1024) to get starting channel index) / languages:c,eel2,lua,python,eel,cpp

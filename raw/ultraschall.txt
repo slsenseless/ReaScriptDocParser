@@ -265,15 +265,15 @@ projecttablist:an array, that holds all ReaProjects as well as the projectfilena
 ------
 name:ultraschall.GetApiVersion
 language:lua
-return:(number:versionnumber),(string:version),(string:date),(string:beta),(string:tagline),(string:buildnumber)
+return:(number:versionnumber),(string:majorversion),(string:date),(string:subversion),(string:tagline),(string:buildnumber)
 params:
 description:
 returns the version, release-date and if it's a beta-version plus the currently installed hotfix
 RETURNS:
 versionnumber:a number, that you can use for comparisons like, "if requestedversion>versionnumber then"
-version:the current Api-version
-date:the release-date of the currently installed hotfix ($ResourceFolder/ultraschall_api/ultraschall_hotfixes.lua)
-beta:if it's a beta version, this is the beta-version-number
+majorversion:the current Api-major-version
+date:the release-date of the currently installed hotfix ($ResourceFolder/ultraschall_api/ultraschall_hotfixes.lua); XX_XXX_XXXX if no hotfix is installed currently
+subversion:a subversion-number of a major-version
 tagline:the tagline of the current release
 buildnumber:the build-number of the current release
 ------
@@ -568,6 +568,36 @@ RETURNS:
 retval:true, numbers are equal; false, numbers aren't equal
 diff:the difference between numbers a and b
 ------
+name:ultraschall.EscapeMagicCharacters_String
+language:lua
+return:(string:escaped_string)
+params:(string:sourcestring)
+description:
+Escapes the magic characters(needed for pattern matching), so the string can be fed as is into string.match-functions.
+That way, characters like . or - or * etc do not trigger pattern-matching behavior but are used as regular . or - or * etc.
+returns nil in case of an error
+PARAMETERS:
+sourcestring:the string, whose magic characters you want to escape for future use
+RETURNS:
+escaped_string:the string with all magic characters escaped
+------
+name:ultraschall.ActionsList_GetSelectedActions
+language:lua
+return:(integer:num_found_actions),(integer:sectionID),(string:sectionName),(table:selected_actions),(table:CmdIDs),(table:ToggleStates)
+params:
+description:
+returns the selected entries from the actionlist, when opened.
+The order of the tables of found actions, ActionCommandIDs and ToggleStates is the same in all of the three tables.
+They also reflect the order of userselection in the ActionList itself from top to bottom of the ActionList.
+returns -1 in case of an error
+RETURNS:
+num_found_actions:the number of selected actions; -1, if not opened
+sectionID:the id of the section, from which the selected actions are from
+sectionName:the name of the selected section
+selected_actions:the texts of the found actions as a handy table
+CmdIDs:the ActionCommandIDs of the found actions as a handy table; all of them are strings, even the numbers, but can be converted using Reaper's own function reaper.NamedCommandLookup
+ToggleStates:the current toggle-states of the selected actions; 1, on; 0, off; -1, no such toggle state available
+------
 name:ultraschall.GetProject_RenderOutputPath
 language:lua
 return:(string:render_output_directory)
@@ -620,21 +650,6 @@ Kind:the type of the webvtt-file, like: captions
 Language:the language of the webvtt-file
 Captions_Counter:the number of captions in the file
 Captions:the Captions as a table of the format:
-------
-name:ultraschall.WebInterface_GetInstalledInterfaces
-language:lua
-return:(integer:reapers_count_of_webinterface),(array:reapers_webinterface_filenames_with_path),(array:reapers_webinterface_titles),(integer:users_count_of_webinterface),(array:users_webinterface_filenames_with_path),(array:users_webinterface_titles)
-params:
-description:
-Returns the currently installed web-interface-pages.
-Will return Reaper's default ones(resources-folder/Plugins/reaper_www_root/) as well as your customized ones(resources-folder/reaper_www_root/)
-RETURNS:
-reapers_count_of_webinterface:the number of factory-default webinterfaces, installed by Reaper
-reapers_webinterface_filenames_with_path:the filenames with path of the webinterfaces(can be .htm or .html)
-reapers_webinterface_titles:the titles of the webinterfaces, as shown in the titlebar of the browser
-users_count_of_webinterface:the number of user-customized webinterfaces
-users_webinterface_filenames_with_path:the filenames with path of the webinterfaces(can be .htm or .html)
-users_webinterface_titles:the titles of the webinterfaces, as shown in the titlebar of the browser
 ------
 name:ultraschall.GFX_DrawThickRoundRect
 language:lua
@@ -759,99 +774,23 @@ rotyoffs:influences rotation
 RETURNS:
 retval:true, blitting was successful; false, blitting was unsuccessful
 ------
-name:ultraschall.ApplyRenderTable_Project
+name:ultraschall.GFX_GetDropFile
 language:lua
-return:(boolean:retval)
-params:(RenderTable:RenderTable), (optional boolean:apply_rendercfg_string)
+return:(boolean:changed),(integer:num_dropped_files),(array:dropped_files),(integer:drop_mouseposition_x),(integer:drop_mouseposition_y)
+params:
 description:
-Sets all stored render-settings from a RenderTable as the current project-settings.
-Expected table is of the following structure:
-RenderTable["AddToProj"] - Add rendered items to new tracks in project-checkbox; true, checked; false, unchecked
-RenderTable["Bounds"] - 0, Custom time range; 1, Entire project; 2, Time selection; 3, Project regions; 4, Selected Media Items(in combination with Source 32); 5, Selected regions
-RenderTable["Channels"] - the number of channels in the rendered file; 1, mono; 2, stereo; higher, the number of channels
-RenderTable["CloseAfterRender"] - true, close rendering to file-dialog after render; false, don't close it
-RenderTable["Dither"] - &1, dither master mix; &2, noise shaping master mix; &4, dither stems; &8, dither noise shaping stems
-RenderTable["EmbedStretchMarkers"] - Embed stretch markers/transient guides; true, checked; false, unchecked
-RenderTable["Endposition"] - the endposition of the rendering selection in seconds
-RenderTable["MultiChannelFiles"] - Multichannel tracks to multichannel files-checkbox; true, checked; false, unchecked
-RenderTable["OfflineOnlineRendering"] - Offline/Online rendering-dropdownlist; 0, Full-speed Offline; 1, 1x Offline; 2, Online Render; 3, Online Render(Idle); 4, Offline Render(Idle)
-RenderTable["OnlyMonoMedia"] - Tracks with only mono media to mono files-checkbox; true, checked; false, unchecked
-RenderTable["ProjectSampleRateFXProcessing"] - Use project sample rate for mixing and FX/synth processing-checkbox; true, checked; false, unchecked
-RenderTable["RenderFile"] - the contents of the Directory-inputbox of the Render to File-dialog
-RenderTable["RenderPattern"] - the render pattern as input into the File name-inputbox of the Render to File-dialog
-RenderTable["RenderQueueDelay"] - Delay queued render to allow samples to load-checkbox; true, checked; false, unchecked
-RenderTable["RenderQueueDelaySeconds"] - the amount of seconds for the render-queue-delay
-RenderTable["RenderResample"] - Resample mode-dropdownlist; 0, Medium (64pt Sinc); 1, Low (Linear Interpolation); 2, Lowest (Point Sampling); 3, Good (192pt Sinc); 4, Better (348 pt Sinc); 5, Fast (IIR + Linear Interpolation); 6, Fast (IIRx2 + Linear Interpolation); 7, Fast (16pt Sinc); 8, HQ (512 pt); 9, Extreme HQ(768pt HQ Sinc)
-RenderTable["RenderString"] - the render-cfg-string, that holds all settings of the currently set render-output-format as BASE64 string
-RenderTable["RenderString2"] - the render-cfg-string, that holds all settings of the currently set secondary-render-output-format as BASE64 string
-RenderTable["RenderTable"]=true - signals, this is a valid render-table
-RenderTable["SampleRate"] - the samplerate of the rendered file(s)
-RenderTable["SaveCopyOfProject"] - the "Save copy of project to outfile.wav.RPP"-checkbox; true, checked; false, unchecked
-RenderTable["SilentlyIncrementFilename"] - Silently increment filenames to avoid overwriting-checkbox; true, checked; false, unchecked
-RenderTable["Source"] - 0, Master mix; 1, Master mix + stems; 3, Stems (selected tracks); 8, Region render matrix; 16, Tracks with only Mono-Media to Mono Files; 32, Selected media items; 64, selected media items via master; 128, selected tracks via master
-RenderTable["Startposition"] - the startposition of the rendering selection in seconds
-RenderTable["TailFlag"] - in which bounds is the Tail-checkbox checked? &1, custom time bounds; &2, entire project; &4, time selection; &8, all project regions; &16, selected media items; &32, selected project regions
-RenderTable["TailMS"] - the amount of milliseconds of the tail
-Returns false in case of an error
-PARAMETERS:
-RenderTable:a RenderTable, that contains all render-dialog-settings
-apply_rendercfg_string:true or nil, apply it as well; false, don't apply it
+returns the files drag'n'dropped into a gfx-window, including the mouseposition within the gfx-window, where the files have been dropped.
+if changed==true, then the filelist is updated, otherwise this function returns the last dropped files again.
+Note: when the same files will be dropped, changed==true will also be dropped with only the mouse-position updated.
+That way, dropping the same files in differen places is recognised by this function.
+Call repeatedly in every defer-cycle to get the latest files and coordinates.
+Important: Don't use Reaper's own gfx.dropfile while using this, as this could intefere with this function.
 RETURNS:
-retval:true, setting the render-settings was successful; false, it wasn't successful
-------
-name:ultraschall.IsValidMediaItemStateChunkArray
-language:lua
-return:(boolean:retval),(integer:count),(array:retMediaItemStateChunkArray)
-params:(array:MediaItemStateChunkArray)
-description:
-Checks, whether MediaItemStateChunkArray is valid.
-It throws out all entries, that are not MediaItemStateChunks and returns the altered array as result.
-returns false in case of an error or if it is not a valid MediaItemStateChunkArray
-PARAMETERS:
-MediaItemStateChunkArray:a MediaItemStateChunkArray that shall be checked for validity
-RETURNS:
-retval:returns true if MediaItemStateChunkArray is valid, false if not
-count:the number of entries in the returned retMediaItemStateChunkArray
-retMediaItemStateChunkArray:the, possibly, altered MediaItemStateChunkArray
-------
-name:ultraschall.IsTrackSoundboard
-language:lua
-return:(boolean:retval)
-params:(integer:tracknumber)
-description:
-Returns, if this track is a soundboard-track, means, contains an Ultraschall-Soundboard-plugin.
-Only relevant in Ultraschall-installations
-returns false in case of an error
-PARAMETERS:
-tracknumber:the tracknumber to check for; 0, for master-track; 1, for track 1; n for track n
-RETURNS:
-retval:true, it is an Ultraschall-Soundboard-track; false, it is not
-------
-name:ultraschall.IsTrackStudioLink
-language:lua
-return:(boolean:retval)
-params:(integer:tracknumber)
-description:
-Returns, if this track is a StudioLink-track, means, contains a StudioLink-Plugin
-Only relevant in Ultraschall-installations
-returns false in case of an error
-PARAMETERS:
-tracknumber:the tracknumber to check for; 0, for master-track; 1, for track 1; n for track n
-RETURNS:
-retval:true, it is a StudioLink-track; false, it is not
-------
-name:ultraschall.IsTrackStudioLinkOnAir
-language:lua
-return:(boolean:retval)
-params:(integer:tracknumber)
-description:
-Returns, if this track is a StudioLinkOnAir-track, means, contains a StudioLinkOnAir-Plugin
-Only relevant in Ultraschall-installations
-returns false in case of an error
-PARAMETERS:
-tracknumber:the tracknumber to check for; 0, for master-track; 1, for track 1; n for track n
-RETURNS:
-retval:true, it is a StudioLinkOnAir-track; false, it is not
+changed:true, new files have been dropped since last time calling this function; false, no new files have been dropped
+num_dropped_files:the number of dropped files; -1, if no files have beend dropped at all
+dropped_files:an array with all filenames+path of the dropped files
+drop_mouseposition_x:the x-mouseposition within the gfx-window, where the files have been dropped; -10000, if no files have been dropped yet
+drop_mouseposition_y:the y-mouseposition within the gfx-window, where the files have been dropped; -10000, if no files have been dropped yet
 ------
 name:ultraschall.VID_VideoUIStateCoords2Pixels
 language:lua
@@ -938,6 +877,45 @@ projectfilename_with_path:the projectfile+path, from which to get the automation
 ProjectStateChunk:a statechunk of a project, usually the contents of a rpp-project-file; only used, when projectfilename_with_path=nil
 RETURNS:
 automation_items_count:the number of automation-items
+------
+name:ultraschall.AutomationItems_GetAll
+language:lua
+return:(integer:number_of_automationitems),(table:AutomationItems_Table)
+params:
+description:
+Returns all automation items from the current project as a handy table
+The format of the table is as follows:
+AutomationItems[automationitem_idx]["Track"] - the track, in which the automation item is located
+AutomationItems[automationitem_idx]["EnvelopeObject"] - the envelope, in which the automationitem is located
+AutomationItems[automationitem_idx]["EnvelopeName"] - the name of the envelope
+AutomationItems[automationitem_idx]["AutomationItem_Index"] - the index of the automation with EnvelopeObject
+AutomationItems[automationitem_idx]["AutomationItem_PoolID"] - the pool-Id of the automation item
+AutomationItems[automationitem_idx]["AutomationItem_Position"] - the position of the automation item in seconds
+AutomationItems[automationitem_idx]["AutomationItem_Length"] - the length of the automation item in seconds
+AutomationItems[automationitem_idx]["AutomationItem_Startoffset"] - the startoffset of the automation item in seconds
+AutomationItems[automationitem_idx]["AutomationItem_Playrate"]- the playrate of the automation item
+AutomationItems[automationitem_idx]["AutomationItem_Baseline"]- the baseline of the automation item, between 0 and 1
+AutomationItems[automationitem_idx]["AutomationItem_Amplitude"]- the amplitude of the automation item, between -1 and +1
+AutomationItems[automationitem_idx]["AutomationItem_LoopSource"]- the loopsource-state of the automation item; 0, unlooped; 1, looped
+AutomationItems[automationitem_idx]["AutomationItem_UISelect"]- the selection-state of the automation item; 0, unselected; nonzero, selected
+AutomationItems[automationitem_idx]["AutomationItem_Pool_QuarteNoteLength"]- the quarternote-length
+RETURNS:
+number_of_automationitems:the number of automation-items found in the current project
+AutomationItems_Table:all found automation-items as a handy table(see description for details)
+------
+name:ultraschall.AutomationItem_Delete
+language:lua
+return:(boolean:retval)
+params:(TrackEnvelope:env), (integer:automationitem_idx), (optional boolean:preservepoints)
+description:
+Deletes an Automation-Item, optionally preserves the points who are added to the underlying envelope.
+returns false in case of an error
+PARAMETERS:
+env:the TrackEnvelope, in which the automation-item to be deleted is located
+automationitem_idx:the automationitem that shall be deleted; 0, for the first one
+preservepoints:true, keepthe envelopepoints and add them to the underlying envelope; nil or false, just delete the AutomationItem
+RETURNS:
+retval:true, deleting was successful; false, deleting was not successful
 ------
 name:ultraschall.GetMediaItemsFromClipboard
 language:lua
@@ -2590,6 +2568,36 @@ wet_byp:wet_byp is either "" if not existing, wet or bypass
 minimum_range:the minimum value, accepted by this envelope; 6 digits-precision
 maximum_range:the maximum-value, accepted by this envelope; 6 digits-precision
 unknown:unknown
+------
+name:ultraschall.GetAllTrackEnvelopes
+language:lua
+return:(integer:number_of_trackenvelopes),(table:TrackEnvelopes_Table)
+params:
+description:
+Returns all TrackEnvelopes of all tracks from the current project as a handy table
+The format of the table is as follows:
+TrackEnvelopes[trackenvelope_idx]["Track"] - the idx of the track; 0, for mastertrack, 1, for first track, etc
+TrackEnvelopes[trackenvelope_idx]["EnvelopeObject"] - the TrackEnvelope-object
+TrackEnvelopes[trackenvelope_idx]["EnvelopeName"] - the name of of TrackEnvelopeObject
+RETURNS:
+number_of_trackenvelopes:the number of TrackEnvelopes found in the current project
+TrackEnvelopes_Table:all found TrackEnvelopes as a handy table(see description for details)
+------
+name:ultraschall.GetAllTakeEnvelopes
+language:lua
+return:(integer:number_of_takeenvelopes),(table:TakeEnvelopes_Table)
+params:
+description:
+Returns all TakeEnvelopes of all MediaItems from the current project as a handy table
+The format of the table is as follows:
+TakeEnvelopes[takeenvelope_idx]["MediaItem"] - the idx of the MediaItem
+TakeEnvelopes[takeenvelope_idx]["MediaItem_Take"] - the idx of the trake of the MediaItem
+TakeEnvelopes[takeenvelope_idx]["MediaItem_Take_Name"] - the name of the MediaItek_Take
+TakeEnvelopes[takeenvelope_idx]["EnvelopeObject"] - the TakeEnvelopeObject in question
+TakeEnvelopes[takeenvelope_idx]["EnvelopeName"] - the name of of TakeEnvelopeObject
+RETURNS:
+number_of_takeenvelopes:the number of TakeEnvelopes found in the current project
+TakeEnvelopes_Table:all found TakeEnvelopes as a handy table(see description for details)
 ------
 name:ultraschall.EventManager_EnumerateStartupEvents
 language:lua
@@ -5577,6 +5585,34 @@ HEX_functionstring:the function, stored as HEX-string
 RETURNS:
 function:the loaded function
 ------
+name:ultraschall.Benchmark_GetStartTime
+language:lua
+return:(number:starttime)
+params:
+description:
+This function is for benchmarking parts of your code.
+It returns the starttime of the last benchmark-start.
+returns nil, if no benchmark has been made yet.
+Use Benchmark_MeasureTime to start/reset a new benchmark-measureing.
+RETURNS:
+starttime:the starttime of the currently running benchmark
+------
+name:ultraschall.Benchmark_MeasureTime
+language:lua
+return:(number:elapsed_time),(string:elapsed_time_string),(string:measure_evaluation)
+params:(optional integer:time_mode), (optional boolean:reset)
+description:
+This function is for benchmarking parts of your code.
+It returns the passed time, since last time calling this function.
+Use Benchmark_GetStartTime to start the benchmark.
+PARAMETERS:
+time_mode:the formatting of elapsed_time_string
+reset:true, resets the starttime(for new measuring); false, keeps current measure-starttime(for continuing measuring)
+RETURNS:
+elapsed_time:the elapsed time, formatted by parameter time_mode
+elapsed_time_string:the elapsed time, formatted by parameter time_mode
+measure_evaluation:an evaluation of time, mostly starting with < or > an a number of +
+------
 name:ultraschall.ResizePNG
 language:lua
 return:(integer:count)
@@ -6851,6 +6887,19 @@ index:the index of the marker/region, whose guid you want to retrieve
 RETURNS:
 guid:the guid of the marker/region of the marker with a specific index
 ------
+name:ultraschall.IsTimeSigmarkerAtPosition
+language:lua
+return:(boolean:retval)
+params:(number:position), (optional integer:position_mode)
+description:
+returns, if at position is a time-signature marker
+returns false in case of an error
+PARAMETERS:
+position:nil or 0, use position in seconds; 1, use position in measures
+position_mode:nil or 0, use position in seconds; 1, use position in measures
+RETURNS:
+retval:true, marker found; false, marker not found
+------
 name:ultraschall.GetItemPosition
 language:lua
 return:(number:position)
@@ -8100,13 +8149,14 @@ item:the MediaItem of the newly inserted image
 ------
 name:ultraschall.GetAllSelectedMediaItems
 language:lua
-return:(integer:count),(array:MediaItemArray)
+return:(integer:count),(array:MediaItemArray),(array:MediaItemStateChunkArray)
 params:
 description:
 Returns all selected items in the project as MediaItemArray. Empty MediaItemAray if none is found.
 RETURNS:
 count:the number of entries in the returned MediaItemArray
 MediaItemArray:all selected MediaItems returned as an array
+MediaItemStateChunkArray:the statechunks of all found MediaItems as an array
 ------
 name:ultraschall.SetMediaItemsSelected_TimeSelection
 language:lua
@@ -8584,6 +8634,48 @@ RETURNS:
 count:the number of selected items
 MediaItemArray:an array with all the found and selected MediaItems
 MediaItemStateChunkArray:an array with the MediaItemStateChunks, that can be used to create new items with InsertMediaItem_MediaItemStateChunk
+------
+name:ultraschall.MediaItems_Outtakes_AddSelectedItems
+language:lua
+return:(integer:number_of_items)
+params:(ReaProject:TargetProject)
+description:
+Adds selected MediaItems to the outtakes-vault of a given project.
+returns -1 in case of an error
+PARAMETERS:
+TargetProject:the project, into whose outtakes-vault the selected items shall be added to; 0 or nil, for the current project
+RETURNS:
+number_of_items:the number of items, added to the outtakes-vault
+------
+name:ultraschall.MediaItems_Outtakes_GetAllItems
+language:lua
+return:(integer:number_of_items),(array:MediaItemStateChunkArray)
+params:(ReaProject:TargetProject), (optional boolean:EachItemsAfterAnother)
+description:
+Returns all MediaItems stored in the outtakes-vault of a given project.
+returns -1 in case of an error
+PARAMETERS:
+TargetProject:the project, into whose outtakes-vault the selected items shall be added to; 0 or nil, for the current project
+EachItemsAfterAnother:position the MediaItems one after the next, so if you import them, they would be stored one after another
+RETURNS:
+number_of_items:the number of items, added to the outtakes-vault
+MediaItemStateChunkArray:all the MediaItemStateChunks of the stored MediaItems in the outtakes vault
+------
+name:ultraschall.MediaItems_Outtakes_InsertAllItems
+language:lua
+return:(boolean:retval),(integer:number_of_items),(array:MediaItemArray)
+params:(ReaProject:TargetProject), (integer:tracknumber), (number:Startposition)
+description:
+Inserts all MediaItems from the outtakes-vault into a certain track, with one item after the other, back to back.
+returns false in case of an error
+PARAMETERS:
+TargetProject:the project, into whose outtakes-vault the selected items shall be added to; 0 or nil, for the current project
+tracknumber:the tracknumber, into which to insert all items from the outtakes-vault
+Startposition:the position, at which to insert the first MediaItem; nil, startposition=0
+RETURNS:
+retval:true, adding was successful; false, adding was unsuccessful
+number_of_items:the number of added items
+MediaItemArray:all the inserted MediaItems
 ------
 name:ultraschall.DeleteProjExtState_Section
 language:lua
@@ -9353,6 +9445,20 @@ ProjectBayStateChunk:a string, that you want to check for being a valid ProjectB
 RETURNS:
 count:the number of items found in the ProjectBayStateChunk
 ------
+name:ultraschall.IsTimeSelectionActive
+language:lua
+return:(boolean:retval),(optional number:start_of_timeselection),(optional number:end_of_timeselection)
+params:(optional ReaProject:Project)
+description:
+Returns, if there's a time-selection and its start and endposition in a project.
+returns false in case of an error
+PARAMETERS:
+Project:the project, whose time-selection-state you want to know; 0 or nil, the current project
+RETURNS:
+retval:true, there is a time-selection; false, there isn't a time-selection
+start_of_timeselection:start of the time-selection
+end_of_timeselection:end of the time-selection
+------
 name:ultraschall.GetProjectState_NumbersOnly
 language:lua
 return:(table:values)
@@ -9836,17 +9942,18 @@ project_smplrate4mix_and_fx:Use project sample rate for mixing and FX/synth proc
 ------
 name:ultraschall.GetProject_AddMediaToProjectAfterRender
 language:lua
-return:(integer:addmedia_after_render_state)
+return:(integer:state)
 params:(string:projectfilename_with_path), (optional string:ProjectStateChunk)
 description:
-Returns, if rendered media shall be added to the project afterwards, from an RPP-Projectfile or a ProjectStateChunk.
+Returns, if rendered media shall be added to the project afterwards as well as if likely silent files shall be rendered-state, from an RPP-Projectfile or a ProjectStateChunk.
+It's the state of the "Add rendered items to new tracks in project"- checkbox and "Do not render files that are likely silent"-checkbox, as set in the Render to file-dialog.
 It's the entry RENDER_ADDTOPROJ
 Returns nil in case of error.
 PARAMETERS:
 projectfilename_with_path:filename with path for the rpp-projectfile; nil, if you want to use parameter ProjectStateChunk
 ProjectStateChunk:a ProjectStateChunk to use instead if a filename; only used, when projectfilename_with_path is nil
 RETURNS:
-addmedia_after_render_state:1, rendered media shall be added to the project afterwards; 0, don't add
+state:the state of the "Add rendered items to new tracks in project"- checkbox and "Do not render files that are likely silent"-checkbox 
 ------
 name:ultraschall.GetProject_RenderStems
 language:lua
@@ -10507,13 +10614,15 @@ ProjectStateChunk:the altered ProjectStateChunk
 name:ultraschall.SetProject_AddMediaToProjectAfterRender
 language:lua
 return:(integer:retval),(optional string:ProjectStateChunk)
-params:(string:projectfilename_with_path), (integer:addmedia_after_render_state), (optional string:ProjectStateChunk)
+params:(string:projectfilename_with_path), (integer:state), (optional string:ProjectStateChunk)
 description:
-Returns, if rendered media shall be added to the project afterwards, from an RPP-Projectfile or a ProjectStateChunk.
+Sets, if rendered media shall be added to the project afterwards as well as if likely silent files shall be rendered-state, from an RPP-Projectfile or a ProjectStateChunk.
+It's the state of the "Add rendered items to new tracks in project"- checkbox and "Do not render files that are likely silent"-checkbox, as set in the Render to file-dialog.
+It's the entry RENDER_ADDTOPROJ
 Returns -1 in case of error.
 PARAMETERS:
 projectfilename_with_path:the filename of the projectfile; nil, to use Parameter ProjectStateChunk instead
-addmedia_after_render_state:1 - rendered media shall be added to the project afterwards, 0 - don't add
+state:the state of the "Add rendered items to new tracks in project"- checkbox and "Do not render files that are likely silent"-checkbox 
 ProjectStateChunk:a projectstatechunk, that you want to be changed
 RETURNS:
 retval:-1 in case of error, 1 in case of success
@@ -11891,7 +12000,7 @@ Submenuentry1
 SubmenuEntry2Closer
 Grayed Out
 One last thing: the title does not count as entry!
-Note for Mac-users: has a possible issue with the y coordinate, where it's position is actually "reversed", due a Reaper-bug.
+Note for Mac-users: y-coordinates are "reversed", so y=0 is at the bottom
 Note for Linux: does not work on Linux yet.
 returns -1 in case of an error
 PARAMETERS:
@@ -11962,7 +12071,7 @@ return:(integer:retval)
 params:(string:msg), (optional string:title), (optional integer:type), (optional string:button1_caption), (optional string:button2_caption), (optional string:button3_caption)
 description:
 Shows Messagebox with user-clickable buttons. Works like reaper.MB() but unlike reaper.MB, this function accepts omitting some parameters for quicker use.
-Important: This works only on Windows.
+Important: This works only on Windows, due some bug on Mac which I couldn't work out yet.
 You can change the text in the buttons with button1_caption, button2_caption and button3_caption.
 Returns -1 in case of an error
 PARAMETERS:
@@ -13068,8 +13177,10 @@ RenderTable["Channels"] - the number of channels in the rendered file; 1, mono; 
 RenderTable["CloseAfterRender"] - true, closes rendering to file-dialog after render; false, doesn't close it
 RenderTable["Dither"] - &1, dither master mix; &2, noise shaping master mix; &4, dither stems; &8, dither noise shaping stems
 RenderTable["EmbedStretchMarkers"] - Embed stretch markers/transient guides; true, checked; false, unchecked
+RenderTable["EmbedTakeMarkers"] - Embed Take markers; true, checked; false, unchecked
 RenderTable["Endposition"] - the endposition of the rendering selection in seconds
 RenderTable["MultiChannelFiles"] - Multichannel tracks to multichannel files-checkbox; true, checked; false, unchecked
+RenderTable["NoSilentRender"] - Do not render files that are likely silent-checkbox; true, checked; false, unchecked
 RenderTable["OfflineOnlineRendering"] - Offline/Online rendering-dropdownlist; 0, Full-speed Offline; 1, 1x Offline; 2, Online Render; 3, Online Render(Idle); 4, Offline Render(Idle)
 RenderTable["OnlyMonoMedia"] - Tracks with only mono media to mono files-checkbox; true, checked; false, unchecked
 RenderTable["ProjectSampleRateFXProcessing"] - Use project sample rate for mixing and FX/synth processing-checkbox; true, checked; false, unchecked
@@ -13104,8 +13215,10 @@ RenderTable["Channels"] - the number of channels in the rendered file; 1, mono; 
 RenderTable["CloseAfterRender"] - close rendering to file-dialog after render; always true, as this isn't stored in projectfiles
 RenderTable["Dither"] - &1, dither master mix; &2, noise shaping master mix; &4, dither stems; &8, dither noise shaping stems
 RenderTable["EmbedStretchMarkers"] - Embed stretch markers/transient guides; true, checked; false, unchecked
+RenderTable["EmbedTakeMarkers"] - Embed Take markers; true, checked; false, unchecked
 RenderTable["Endposition"] - the endposition of the rendering selection in seconds
 RenderTable["MultiChannelFiles"] - Multichannel tracks to multichannel files-checkbox; true, checked; false, unchecked
+RenderTable["NoSilentRender"] - Do not render files that are likely silent-checkbox; true, checked; false, unchecked
 RenderTable["OfflineOnlineRendering"] - Offline/Online rendering-dropdownlist; 0, Full-speed Offline; 1, 1x Offline; 2, Online Render; 3, Online Render(Idle); 4, Offline Render(Idle)
 RenderTable["OnlyMonoMedia"] - Tracks with only mono media to mono files-checkbox; true, checked; false, unchecked
 RenderTable["ProjectSampleRateFXProcessing"] - Use project sample rate for mixing and FX/synth processing-checkbox; true, checked; false, unchecked
@@ -13234,6 +13347,7 @@ return:(boolean:retval)
 params:(RenderTable:RenderTable), (optional boolean:apply_rendercfg_string)
 description:
 Sets all stored render-settings from a RenderTable as the current project-settings.
+Note: On Reaper 6.10, you cannot set AddToProj and NoSilentRender simultaneously due a bug in Reaper; is fixed in higher versions.
 Expected table is of the following structure:
 RenderTable["AddToProj"] - Add rendered items to new tracks in project-checkbox; true, checked; false, unchecked
 RenderTable["Bounds"] - 0, Custom time range; 1, Entire project; 2, Time selection; 3, Project regions; 4, Selected Media Items(in combination with Source 32); 5, Selected regions
@@ -13241,8 +13355,10 @@ RenderTable["Channels"] - the number of channels in the rendered file; 1, mono; 
 RenderTable["CloseAfterRender"] - true, close rendering to file-dialog after render; false, don't close it
 RenderTable["Dither"] - &1, dither master mix; &2, noise shaping master mix; &4, dither stems; &8, dither noise shaping stems
 RenderTable["EmbedStretchMarkers"] - Embed stretch markers/transient guides; true, checked; false, unchecked
+RenderTable["EmbedTakeMarkers"] - Embed Take markers; true, checked; false, unchecked
 RenderTable["Endposition"] - the endposition of the rendering selection in seconds
 RenderTable["MultiChannelFiles"] - Multichannel tracks to multichannel files-checkbox; true, checked; false, unchecked
+RenderTable["NoSilentRender"] - Do not render files that are likely silent-checkbox; true, checked; false, unchecked
 RenderTable["OfflineOnlineRendering"] - Offline/Online rendering-dropdownlist; 0, Full-speed Offline; 1, 1x Offline; 2, Online Render; 3, Online Render(Idle); 4, Offline Render(Idle)
 RenderTable["OnlyMonoMedia"] - Tracks with only mono media to mono files-checkbox; true, checked; false, unchecked
 RenderTable["ProjectSampleRateFXProcessing"] - Use project sample rate for mixing and FX/synth processing-checkbox; true, checked; false, unchecked
@@ -13281,8 +13397,10 @@ RenderTable["Channels"] - the number of channels in the rendered file; 1, mono; 
 RenderTable["CloseAfterRender"] - close rendering to file-dialog after render; ignored, as this can't be set in projectfiles
 RenderTable["Dither"] - &1, dither master mix; &2, noise shaping master mix; &4, dither stems; &8, dither noise shaping stems
 RenderTable["EmbedStretchMarkers"] - Embed stretch markers/transient guides; true, checked; false, unchecked
+RenderTable["EmbedTakeMarkers"] - Embed Take markers; true, checked; false, unchecked
 RenderTable["Endposition"] - the endposition of the rendering selection in seconds
 RenderTable["MultiChannelFiles"] - Multichannel tracks to multichannel files-checkbox; true, checked; false, unchecked
+RenderTable["NoSilentRender"] - Do not render files that are likely silent-checkbox; true, checked; false, unchecked
 RenderTable["OfflineOnlineRendering"] - Offline/Online rendering-dropdownlist; 0, Full-speed Offline; 1, 1x Offline; 2, Online Render; 3, Online Render(Idle); 4, Offline Render(Idle);
 RenderTable["OnlyMonoMedia"] - Tracks with only mono media to mono files-checkbox; true, checked; false, unchecked
 RenderTable["ProjectSampleRateFXProcessing"] - Use project sample rate for mixing and FX/synth processing-checkbox; true, checked; false, unchecked
@@ -13321,18 +13439,6 @@ Returns false in case of an error
 RETURNS:
 retval:true, checkbox is checked; false, checkbox is unchecked
 ------
-name:ultraschall.SetRender_SaveCopyOfProject
-language:lua
-return:(boolean:retval)
-params:(boolean:state)
-description:
-Sets the "Save copy of project to outfile.wav.RPP"-checkbox of the Render to File-dialog.
-Returns false in case of an error
-PARAMETERS:
-state:true, check the checkbox; false, uncheck the checkbox
-RETURNS:
-retval:true, setting was successful; false, it was unsuccessful
-------
 name:ultraschall.SetRender_QueueDelay
 language:lua
 return:(boolean:retval)
@@ -13343,6 +13449,18 @@ Returns false in case of an error
 PARAMETERS:
 state:true, check the checkbox; false, uncheck the checkbox
 length:the number of seconds the delay shall be
+RETURNS:
+retval:true, setting was successful; false, it was unsuccessful
+------
+name:ultraschall.SetRender_SaveCopyOfProject
+language:lua
+return:(boolean:retval)
+params:(boolean:state)
+description:
+Sets the "Save copy of project to outfile.wav.RPP"-checkbox of the Render to File-dialog.
+Returns false in case of an error
+PARAMETERS:
+state:true, check the checkbox; false, uncheck the checkbox
 RETURNS:
 retval:true, setting was successful; false, it was unsuccessful
 ------
@@ -13416,7 +13534,7 @@ description:
 returns a rendertable, that contains all settings of a specific render-preset.
 use GetRenderPreset_Names to get the available render-preset-names.
 Some settings aren't stored in Presets and will get default values:
-TailMS=0, SilentlyIncrementFilename=false, AddToProj=false, SaveCopyOfProject=false, RenderQueueDelay=false, RenderQueueDelaySeconds=false
+TailMS=0, SilentlyIncrementFilename=false, AddToProj=false, SaveCopyOfProject=false, RenderQueueDelay=false, RenderQueueDelaySeconds=false, NoSilentRender=false
 returned table if of the following format:
 RenderTable["AddToProj"] - Add rendered items to new tracks in project-checkbox; always false, as this isn't stored in render-presets
 RenderTable["Bounds"] - 0, Custom time range; 1, Entire project; 2, Time selection; 3, Project regions; 4, Selected Media Items(in combination with Source 32); 5, Selected regions
@@ -13424,10 +13542,12 @@ RenderTable["Channels"] - the number of channels in the rendered file; 1, mono; 
 RenderTable["CloseAfterRender"] - close rendering to file-dialog after rendering; always true, as this isn't stored in render-presets
 RenderTable["Dither"] - &1, dither master mix; &2, noise shaping master mix; &4, dither stems; &8, dither noise shaping stems
 RenderTable["EmbedStretchMarkers"] - Embed stretch markers/transient guides; true, checked; false, unchecked
+RenderTable["EmbedTakeMarkers"] - Embed Take markers; true, checked; false, unchecked
 RenderTable["Endposition"] - the endposition of the rendering selection in seconds
 RenderTable["MultiChannelFiles"] - Multichannel tracks to multichannel files-checkbox; true, checked; false, unchecked
 RenderTable["OfflineOnlineRendering"] - Offline/Online rendering-dropdownlist; 0, Full-speed Offline; 1, 1x Offline; 2, Online Render; 3, Online Render(Idle); 4, Offline Render(Idle)
 RenderTable["OnlyMonoMedia"] - Tracks with only mono media to mono files-checkbox; true, checked; false, unchecked
+RenderTable["NoSilentRender"] - Do not render files that are likely silent-checkbox; can't be set in render-presets, therefore always set to false
 RenderTable["ProjectSampleRateFXProcessing"] - Use project sample rate for mixing and FX/synth processing-checkbox; true, checked; false, unchecked
 RenderTable["RenderFile"] - the contents of the Directory-inputbox of the Render to File-dialog
 RenderTable["RenderPattern"] - the render pattern as input into the File name-inputbox of the Render to File-dialog
@@ -13490,6 +13610,8 @@ adds a new render-preset into reaper-render.ini.
 This function will check, whether the chosen names are already in use.
 Added render-presets are available after (re-)opening in the Render to File-dialog
 Note: You can choose, whether to include only Bounds, only RenderFormatOptions of both. The Bounds and the RenderFormatOptions store different parts of the render-presets.
+Some settings aren't stored in Presets and will get default values:
+TailMS=0, SilentlyIncrementFilename=false, AddToProj=false, SaveCopyOfProject=false, RenderQueueDelay=false, RenderQueueDelaySeconds=false, NoSilentRender=false
 Bounds_Name stores only:
 RenderTable["Bounds"] - the bounds-dropdownlist,
 0, Custom time range
@@ -13546,6 +13668,7 @@ RenderTable["Dither"] - the Dither/Noise shaping-checkboxes:
 RenderTable["MultiChannelFiles"] - multichannel-files-checkbox
 RenderTable["OnlyMonoMedia"] - only mono media-checkbox
 RenderTable["EmbedStretchMarkers"] - Embed stretch markers/transient guides-checkbox
+RenderTable["EmbedTakeMarkers"] - Embed Take markers-checkbox
 RenderTable["RenderString"] - the render-cfg-string, which holds the render-outformat-settings
 RenderTable["RenderString2"] - the render-cfg-string, which holds the secondary render-outformat-settings
 Returns false in case of an error
@@ -13565,6 +13688,8 @@ sets an already existing render-preset in reaper-render.ini.
 This function will check, whether the chosen names aren't given yet in any preset.
 Changed render-presets are updated after (re-)opening in the Render to File-dialog
 Note: You can choose, whether to include only Bounds, only RenderFormatOptions of both. The Bounds and the RenderFormatOptions store different parts of the render-presets.
+Some settings aren't stored in Presets and will get default values:
+TailMS=0, SilentlyIncrementFilename=false, AddToProj=false, SaveCopyOfProject=false, RenderQueueDelay=false, RenderQueueDelaySeconds=false, NoSilentRender=false
 Bounds_Name stores only:
 RenderTable["Bounds"] - the bounds-dropdownlist,
 0, Custom time range
@@ -13620,6 +13745,8 @@ RenderTable["Dither"] - the Dither/Noise shaping-checkboxes:
 &2, noise shaping master mix
 &4, dither stems
 &8, dither noise shaping stems
+RenderTable["EmbedStretchMarkers"] - Embed stretch markers/transient guides-checkbox
+RenderTable["EmbedTakeMarkers"] - Embed Take markers-checkbox
 RenderTable["RenderString"] - the render-cfg-string, which holds the render-outformat-settings
 RenderTable["RenderString2"] - the render-cfg-string, which holds the secondary render-outformat-settings; "" to remove it from this preset
 Returns false in case of an error
@@ -14461,6 +14588,60 @@ PARAMETERS:
 master:true, include the master-track; false, don't include the master-track
 RETURNS:
 retval:true, at least one track has fx bypass activated; false, no track has fx-bypass activated
+------
+name:ultraschall.SetTrack_LastTouched
+language:lua
+return:(boolean:retval)
+params:(integer:track)
+description:
+Sets a track to be last touched track.
+returns false in case of an error
+PARAMETERS:
+track:the track, which you want to set as last touched track
+RETURNS:
+retval:true, setting was successful; false, setting was not successful
+------
+name:ultraschall.GetTrackByTrackName
+language:lua
+return:(integer:number_of_found_tracks),(table:found_tracks),(table:found_tracknames)
+params:(string:trackname), (boolean:case_sensitive), (integer:escaped_strict)
+description:
+returns all tracks with a certain name.
+You can set case-sensitivity, whether pattern-matchin is possible and whether the name shall be used strictly.
+For instance, if you want to look for a track named exactly "JaM.-Enlightened" you set case_sensitive=false and escaped_strict=2. That way, tracks names "JaM.*Enlightened" will be ignored.
+returns -1 in case of an error
+PARAMETERS:
+trackname:the trackname to look for
+case_sensitive:true, take care of case-sensitivity; false, don't take case-sensitivity into account
+escaped_strict:0, use trackname as matching-pattern, will find all tracknames following the pattern(Ja.-m -> Jam, Jam123Police, JaABBAm)
+RETURNS:
+number_of_found_tracks:the number of found tracks
+found_tracks:the found tracks as table
+found_tracknames:the found tracknames
+------
+name:ultraschall.CollapseTrackHeight
+language:lua
+return:(boolean:retval)
+params:(integer:track)
+description:
+Collapses the height of a track to the minimum height as set by the theme
+returns false in case of an error
+PARAMETERS:
+track:the track, which you want to collapse in height
+RETURNS:
+retval:true, collapsing was successful; false, collapsing was not successful
+------
+name:ultraschall.SetTrack_Trackheight_Force
+language:lua
+return:(boolean:retval)
+params:(integer:track), (integer:trackheight)
+description:
+Sets the trackheight of a track. Forces trackheight beyond limits set by the theme.
+returns false in case of an error
+PARAMETERS:
+track:the trackheight in pixels, 0 and higher
+RETURNS:
+retval:true, collapsing was successful; false, collapsing was not successful
 ------
 name:ultraschall.GetTrackHWOut
 language:lua
@@ -16446,4 +16627,19 @@ Needs ultraschall-Soundboard installed to be useable!
 Track(s) who hold the soundboard must be recarmed and recinput set to MIDI or VKB.
 PARAMETERS:
 playerindex:the player of the SoundBoard; from 1-24
+------
+name:ultraschall.WebInterface_GetInstalledInterfaces
+language:lua
+return:(integer:reapers_count_of_webinterface),(array:reapers_webinterface_filenames_with_path),(array:reapers_webinterface_titles),(integer:users_count_of_webinterface),(array:users_webinterface_filenames_with_path),(array:users_webinterface_titles)
+params:
+description:
+Returns the currently installed web-interface-pages.
+Will return Reaper's default ones(resources-folder/Plugins/reaper_www_root/) as well as your customized ones(resources-folder/reaper_www_root/)
+RETURNS:
+reapers_count_of_webinterface:the number of factory-default webinterfaces, installed by Reaper
+reapers_webinterface_filenames_with_path:the filenames with path of the webinterfaces(can be .htm or .html)
+reapers_webinterface_titles:the titles of the webinterfaces, as shown in the titlebar of the browser
+users_count_of_webinterface:the number of user-customized webinterfaces
+users_webinterface_filenames_with_path:the filenames with path of the webinterfaces(can be .htm or .html)
+users_webinterface_titles:the titles of the webinterfaces, as shown in the titlebar of the browser
 ------
