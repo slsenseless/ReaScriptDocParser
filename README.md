@@ -23,6 +23,8 @@ It gives additionnal informations like descriptions for functions parameters and
 
 Be sure to update the `api` folder with the lastest documentation available.
 
+Command arguments are available, check `--help` to get more information.
+
 Below is a list of available parser.
 
 ## Visual Studio Code parser
