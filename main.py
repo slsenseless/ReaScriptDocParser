@@ -146,7 +146,7 @@ if __name__ == "__main__":
         output = output_dir + output + output_format
         print("Converting {} to {} ...".format(api_doc, output))
         doc_format: str = api_doc.rsplit('.')[-1]
-        with open(api_doc, 'r') as f:
+        with open(api_doc, 'rb') as f:
             doc_data: AnyStr = f.read()
 
         soup: BeautifulSoup = BeautifulSoup(doc_data, features="html.parser")
